@@ -18,3 +18,14 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('/profile', 'UsersController@profile');
+Route::get('/profile/edit', 'UsersController@edit');
+Route::post('/profile/edit', 'UsersController@update');
+Route::get('/profile/apply_trader_role', 'UsersController@apply_trader_role');
+
+use App\Role;
+Route::get('/create_roles', function () {
+    Role::create(['name'=>'Trader']);
+    Role::create(['name'=>'Client']);
+});

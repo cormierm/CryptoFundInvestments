@@ -4,6 +4,7 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
+            <a href="/profile"><button class="btn btn-primary">User Profile</button></a>
             <div class="card card-default">
                 <div class="card-header">Dashboard</div>
 
