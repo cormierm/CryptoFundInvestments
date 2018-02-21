@@ -3,33 +3,47 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Fund;
+use App\Risk;
 
 class FundsController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function index()
     {
+        $user = Auth::user();
         $funds = Fund::all();
 
-        return view('funds.index', compact('funds'));
+        return view('funds.index', compact('funds', 'user'));
     }
 
     public function create()
     {
-        return view('funds.create');
+        $user_id = Auth::user()->getAuthIdentifier();
+        $risks = Risk::all();
+        return view('funds.create', compact('risks', 'user_id'));
     }
 
     public function store(Request $request)
     {
-        Fund::create($request->all());
-
+        if (Auth::user()->getAuthIdentifier() == $request->user_id)
+        {
+            Fund::create($request->all());
+        }
         return redirect('/funds');
     }
 
     public function show($id)
     {
+        $user = Auth::user();
         $fund = Fund::findOrFail($id);
 
-        return view('funds.show', compact('fund'));
+        return view('funds.show', compact('fund', 'user'));
     }
 
     public function edit($id)

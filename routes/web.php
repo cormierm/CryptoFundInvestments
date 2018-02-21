@@ -20,12 +20,21 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/profile', 'UsersController@profile');
+Route::get('/trader/{id}', 'UsersController@trader');
 Route::get('/profile/edit', 'UsersController@edit');
 Route::post('/profile/edit', 'UsersController@update');
 Route::get('/profile/apply_trader_role', 'UsersController@apply_trader_role');
+Route::get('/profile/remove_trader_role', 'UsersController@remove_trader_role');
+
+Route::resource('/funds', 'FundsController');
 
 use App\Role;
-Route::get('/create_roles', function () {
+use App\Risk;
+Route::get('/init', function () {
     Role::create(['name'=>'Trader']);
     Role::create(['name'=>'Client']);
+    Risk::create(['name'=>'Aggressive']);
+    Risk::create(['name'=>'Balanced']);
+    Risk::create(['name'=>'Conservative']);
+    return "init done.";
 });
