@@ -21,7 +21,7 @@ class CreateUsersTable extends Migration
             $table->string('last_name');
             $table->string('phone');
             $table->string('trader_title')->default(null)->nullable();
-            $table->string('trader_description')->default(null)->nullable();
+            $table->text('trader_description')->default(null)->nullable();
             $table->string('img_path')->default(null)->nullable();
             $table->rememberToken();
             $table->timestamps();
