@@ -24,6 +24,7 @@ class FundsController extends Controller
 
     public function create()
     {
+
         $user_id = Auth::user()->getAuthIdentifier();
         $risks = Risk::all();
         return view('funds.create', compact('risks', 'user_id'));
@@ -33,9 +34,14 @@ class FundsController extends Controller
     {
         if (Auth::user()->getAuthIdentifier() == $request->user_id)
         {
+            $this->validate($request, [
+                'name'        =>  'required',
+                'description' =>  'required',
+                'risk_id'     =>  'required'
+            ]);
             Fund::create($request->all());
+            return redirect('/funds');
         }
-        return redirect('/funds');
     }
 
     public function show($id)
@@ -49,13 +55,27 @@ class FundsController extends Controller
     public function edit($id)
     {
 
+        $fund = Fund::findOrFail($id);
+        if ($fund->user_id == Auth::user()->getAuthIdentifier()){
+            $risks = Risk::all();
+            return view('funds.edit', compact('fund','risks'));
+        }
     }
 
     public function update(Request $request, $id)
     {
+        $this->validate($request, [
+            'name'        =>  'required',
+            'description' =>  'required|min:5',
+            'risk_id'     =>  'required'
+        ]);
+
         $fund = Fund::findOrFail($id);
-        $fund->update($request->all());
-        return redirect('/funds');
+        if (Auth::user()->getAuthIdentifier() == $request->user_id)
+        {
+            $fund->update($request->all());
+        }
+        return redirect('/funds/');
     }
 
     public function destroy($id)

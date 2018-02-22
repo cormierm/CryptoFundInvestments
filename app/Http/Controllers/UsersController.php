@@ -36,13 +36,32 @@ class UsersController extends Controller
     public function edit()
     {
         $user = Auth::user();
-
         return view('users.edit', compact('user'));
     }
 
     public function update(Request $request)
     {
         $user = Auth::user();
+
+        if ($request->email == $user->email)
+        {
+            $this->validate($request, [
+                'first_name' => 'required|string|max:255',
+                'last_name' => 'required|string|max:255',
+                'phone' => 'required|string|max:255',
+                'email' => 'required|string|email|max:255',
+            ]);
+        }
+        else
+        {
+            $this->validate($request, [
+                'first_name' => 'required|string|max:255',
+                'last_name' => 'required|string|max:255',
+                'phone' => 'required|string|max:255',
+                'email' => 'required|string|email|max:255|unique:users',
+            ]);
+        }
+
         $user->update($request->all());
         return redirect('/profile');
     }

@@ -16,7 +16,7 @@ class CreateFundsTable extends Migration
         Schema::create('funds', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->string('description');
+            $table->text('description');
             $table->integer('risk_id');
             $table->integer('user_id');
             $table->timestamps();
