@@ -25,6 +25,7 @@ Route::get('/profile/edit', 'UsersController@edit');
 Route::post('/profile/edit', 'UsersController@update');
 Route::get('/profile/apply_trader_role', 'UsersController@apply_trader_role');
 Route::get('/profile/remove_trader_role', 'UsersController@remove_trader_role');
+Route::post('/profile/changePassword', 'UsersController@changePassword');
 
 Route::resource('/funds', 'FundsController');
 

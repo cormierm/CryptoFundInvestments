@@ -98,7 +98,7 @@
                             <div class="form-group row mb-0">
                                 <div class="col-md-6 offset-md-4">
                                     <button type="submit" class="btn btn-primary">
-                                        Update
+                                        Update Profile
                                     </button>
                                 </div>
                             </div>
@@ -107,5 +107,74 @@
                 </div>
             </div>
         </div>
+        <br>
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card card-default">
+                    <div class="card-header">Change Password</div>
+
+                    <div class="card-body">
+                        @if (session('errorPassword'))
+                            <div class="alert alert-danger">
+                                {{ session('errorPassword') }}
+                            </div>
+                        @endif
+                        @if (session('successPassword'))
+                            <div class="alert alert-success">
+                                {{ session('successPassword') }}
+                            </div>
+                        @endif
+                        <form method="post" action="/profile/changePassword">
+                            @csrf
+
+                            <div class="form-group row">
+                                <label for="currentPassword" class="col-md-4 col-form-label text-md-right">Current Password</label>
+
+                                <div class="col-md-6">
+                                    <input id="currentPassword" type="password" class="form-control{{ $errors->has('currentPassword') ? ' is-invalid' : '' }}" name="currentPassword">
+
+                                    @if ($errors->has('currentPassword'))
+                                        <span class="invalid-feedback">
+                                        <strong>{{ $errors->first('currentPassword') }}</strong>
+                                    </span>
+                                    @endif
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="password" class="col-md-4 col-form-label text-md-right">New Password</label>
+
+                                <div class="col-md-6">
+                                    <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password">
+
+                                    @if ($errors->has('password'))
+                                        <span class="invalid-feedback">
+                                        <strong>{{ $errors->first('password') }}</strong>
+                                    </span>
+                                    @endif
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="password-confirm" class="col-md-4 col-form-label text-md-right">Confirm Password</label>
+
+                                <div class="col-md-6">
+                                    <input id="password-confirm" type="password" class="form-control" name="password_confirmation">
+                                </div>
+                            </div>
+
+
+
+                            <div class="form-group row mb-0">
+                                <div class="col-md-6 offset-md-4">
+                                    <button type="submit" class="btn btn-danger">
+                                        Change Password
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
     </div>
 @endsection
