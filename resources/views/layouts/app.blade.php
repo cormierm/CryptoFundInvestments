@@ -12,6 +12,7 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/main.css') }}" rel="stylesheet">
 </head>
 <body>
     <div id="app">
@@ -61,7 +62,11 @@
                 </div>
             </div>
         </nav>
-
+        @if (Auth::check())
+        <div id="sidebar">
+            @include('layouts.sidebar')
+        </div>
+        @endif
         <main class="py-4">
             @yield('content')
         </main>
