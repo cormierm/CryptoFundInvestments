@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Investment;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Fund;
@@ -29,7 +31,7 @@ class FundsController extends Controller
             $risks = Risk::all();
             return view('funds.create', compact('risks', 'user_id'));
         }
-        return redirect('FundsController@index');
+        return redirect('/funds');
 
     }
 
@@ -50,9 +52,17 @@ class FundsController extends Controller
     public function show($id)
     {
         $user = Auth::user();
-        $fund = Fund::findOrFail($id);
 
-        return view('funds.show', compact('fund', 'user'));
+        try {
+            $fund = Fund::findOrFail($id);
+        }
+        catch (ModelNotFoundException $ex) {
+            return redirect()->back()->with('errorMessage', 'There was an error retrieving fund');
+        }
+
+        $investments = Investment::all()->where('user_id', Auth::user()->getAuthIdentifier());
+
+        return view('funds.show', compact('fund', 'user', 'investments'));
     }
 
     public function edit($id)

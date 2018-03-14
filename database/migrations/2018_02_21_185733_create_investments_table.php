@@ -18,6 +18,7 @@ class CreateInvestmentsTable extends Migration
             $table->integer('user_id');
             $table->integer('fund_id');
             $table->double('amount');
+            $table->boolean('is_approved')->default(false);
             $table->timestamps();
         });
     }

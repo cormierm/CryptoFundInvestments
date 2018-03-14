@@ -8,6 +8,7 @@
                     <div class="card-header">Fund Details</div>
 
                     <div class="card-body">
+
                         <h2><small>Name:</small> {{ $fund->name }}</h2>
                         <br>
                         <p><strong>Description:</strong> {{ $fund->description }}</p>
@@ -21,13 +22,28 @@
                             <th>Price(CAD)</th>
                             <th>Holdings(CAD)</th>
                             <th>24h Change</th>
+                            <th>Approved</th>
                         </tr>
+                        @foreach ($investments as $investment)
+                            <tr>
+                                <th></th>
+                                <th>{{ $investment->amount }}</th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th>
+                                    @if($investment->is_approved) Yes
+                                    @else No
+                                    @endif
+                                </th>
+                            </tr>
+                        @endforeach
                         </table>
 
                         @if ($fund->user_id == Auth::user()->getAuthIdentifier())
-                                <a href="/funds/{{ $fund->id }}/edit"><button class="btn btn-primary">Edit Fund</button></a>
-                            @endif
-                            <a href=""><button class="btn btn-danger">Invest In Fund</button></a>
+                            <a href="/funds/{{ $fund->id }}/edit"><button class="btn btn-primary">Edit Fund</button></a>
+                        @endif
+                        <a href="/investments/create/{{ $fund->id }}"><button class="btn btn-danger">Invest In Fund</button></a>
                     </div>
                 </div>
             </div>

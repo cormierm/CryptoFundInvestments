@@ -29,6 +29,9 @@ Route::post('/profile/changePassword', 'UsersController@changePassword');
 
 Route::resource('/funds', 'FundsController');
 
+Route::get('/investments/create/{id}', 'InvestmentsController@create');
+Route::post('/investments', 'InvestmentsController@store');
+
 use App\Role;
 use App\Risk;
 Route::get('/init', function () {
