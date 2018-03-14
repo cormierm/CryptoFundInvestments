@@ -24,10 +24,13 @@ class FundsController extends Controller
 
     public function create()
     {
+        if (Auth::user()->isTrader()) {
+            $user_id = Auth::user()->getAuthIdentifier();
+            $risks = Risk::all();
+            return view('funds.create', compact('risks', 'user_id'));
+        }
+        return redirect('FundsController@index');
 
-        $user_id = Auth::user()->getAuthIdentifier();
-        $risks = Risk::all();
-        return view('funds.create', compact('risks', 'user_id'));
     }
 
     public function store(Request $request)

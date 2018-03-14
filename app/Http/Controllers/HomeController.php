@@ -25,7 +25,7 @@ class HomeController extends Controller
 
     public function dashboard()
     {
-        if (Auth::user()->roles->has(1))
+        if (Auth::user()->isTrader())
         {
             $funds = Auth::user()->funds;
             return view('trader_dashboard', compact('funds'));

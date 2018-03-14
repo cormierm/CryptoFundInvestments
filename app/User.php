@@ -39,4 +39,12 @@ class User extends Authenticatable
         return $this->hasMany('App\Investment');
     }
 
+    public function isTrader() {
+        if ($this->roles->has(1))
+        {
+            return true;
+        }
+        return false;
+    }
+
 }

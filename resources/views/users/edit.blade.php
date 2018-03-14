@@ -67,33 +67,37 @@
                                 </div>
                             </div>
 
-                            <div class="form-group row">
-                                <label for="trader_title" class="col-md-4 col-form-label text-md-right">Trader Title</label>
+                            @if($user->isTrader())
 
-                                <div class="col-md-6">
-                                    <input id="trader_title" type="text" class="form-control{{ $errors->has('trader_title') ? ' is-invalid' : '' }}" name="trader_title" value="{{ $user->trader_title }}" autofocus>
+                                <div class="form-group row">
+                                    <label for="trader_title" class="col-md-4 col-form-label text-md-right">Trader Title</label>
 
-                                    @if ($errors->has('trader_title'))
-                                        <span class="invalid-feedback">
-                                        <strong>{{ $errors->first('trader_title') }}</strong>
-                                    </span>
-                                    @endif
+                                    <div class="col-md-6">
+                                        <input id="trader_title" type="text" class="form-control{{ $errors->has('trader_title') ? ' is-invalid' : '' }}" name="trader_title" value="{{ $user->trader_title }}" autofocus>
+
+                                        @if ($errors->has('trader_title'))
+                                            <span class="invalid-feedback">
+                                            <strong>{{ $errors->first('trader_title') }}</strong>
+                                        </span>
+                                        @endif
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div class="form-group row">
-                                <label for="trader_description" class="col-md-4 col-form-label text-md-right">Trader Description</label>
+                                <div class="form-group row">
+                                    <label for="trader_description" class="col-md-4 col-form-label text-md-right">Trader Description</label>
 
-                                <div class="col-md-6">
-                                    <input id="trader_description" type="text" class="form-control{{ $errors->has('trader_description') ? ' is-invalid' : '' }}" name="trader_description" value="{{ $user->trader_description }}" autofocus>
+                                    <div class="col-md-6">
+                                        <input id="trader_description" type="text" class="form-control{{ $errors->has('trader_description') ? ' is-invalid' : '' }}" name="trader_description" value="{{ $user->trader_description }}" autofocus>
 
-                                    @if ($errors->has('trader_description'))
-                                        <span class="invalid-feedback">
-                                        <strong>{{ $errors->first('trader_description') }}</strong>
-                                    </span>
-                                    @endif
+                                        @if ($errors->has('trader_description'))
+                                            <span class="invalid-feedback">
+                                            <strong>{{ $errors->first('trader_description') }}</strong>
+                                        </span>
+                                        @endif
+                                    </div>
                                 </div>
-                            </div>
+
+                            @endif
 
                             <div class="form-group row mb-0">
                                 <div class="col-md-6 offset-md-4">
