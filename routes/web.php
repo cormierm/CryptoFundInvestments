@@ -31,14 +31,26 @@ Route::resource('/funds', 'FundsController');
 
 Route::get('/investments/create/{id}', 'InvestmentsController@create');
 Route::post('/investments', 'InvestmentsController@store');
+Route::post('/investments/approve', 'InvestmentsController@approve');
+
+Route::post('/transactions', 'TransactionsController@store');
+
+
 
 use App\Role;
 use App\Risk;
+Route::get('/test', function () {
+    $fund = App\Fund::find(1);
+    dd($fund->allBalances());
+});
 Route::get('/init', function () {
     Role::create(['name'=>'Trader']);
     Role::create(['name'=>'Client']);
     Risk::create(['name'=>'Aggressive']);
     Risk::create(['name'=>'Balanced']);
     Risk::create(['name'=>'Conservative']);
+    \App\CurrencyType::create(['name'=>'Crypto']);
+    \App\CurrencyType::create(['name'=>'Fiat']);
+    \App\Currency::create(['name'=>'CAD','symbol'=>'CAD','currency_type_id'=>2,'coin_market_cap'=>null]);
     return "init done.";
 });

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Currency;
 use App\Investment;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
@@ -55,9 +56,18 @@ class FundsController extends Controller
 
         try {
             $fund = Fund::findOrFail($id);
+
         }
         catch (ModelNotFoundException $ex) {
             return redirect()->back()->with('errorMessage', 'There was an error retrieving fund');
+        }
+
+        if ($fund->user_id == $user->id) {
+            $unconfirmedInvestments = Investment::all()->where('fund_id', $fund->id)->where('is_approved', false);
+            $availableFunds = Investment::all()->where('fund_id', $fund->id)->where('is_approved', true)->sum('amount');
+            $transactions = $fund->getTransactions()->get();
+            $currencies = Currency::all();
+            return view('funds.management', compact('fund', 'unconfirmedInvestments', 'availableFunds', 'transactions', 'currencies'));
         }
 
         $investments = Investment::all()->where('user_id', Auth::user()->getAuthIdentifier());

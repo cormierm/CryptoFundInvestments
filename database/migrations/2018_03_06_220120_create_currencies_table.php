@@ -18,7 +18,7 @@ class CreateCurrenciesTable extends Migration
             $table->string('name');
             $table->string('symbol');
             $table->integer('currency_type_id')->default(0);
-            $table->string('coin_market_cap_id');
+            $table->string('coin_market_cap_id')->nullable();
             $table->timestamps();
         });
     }

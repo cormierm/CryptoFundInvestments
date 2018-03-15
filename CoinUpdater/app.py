@@ -114,7 +114,7 @@ def insert_coin(coin):
     cursor = db.cursor()
 
     try:
-      cursor.execute(sql, (coin['name'], coin['symbol'], 0, coin['id'], timestamp))
+      cursor.execute(sql, (coin['name'], coin['symbol'], 1, coin['id'], timestamp))
       db.commit()
     except Exception as e:
       db.rollback()
