@@ -41,7 +41,9 @@ use App\Role;
 use App\Risk;
 Route::get('/test', function () {
     $fund = App\Fund::find(1);
-    dd($fund->allBalances());
+    return $fund->marketValue();
+//    $coin = App\Currency::all()->where('symbol', 'CAD')->first;
+//    print($coin->latestCoinPrice->price_cad);
 });
 Route::get('/init', function () {
     Role::create(['name'=>'Trader']);
@@ -52,5 +54,9 @@ Route::get('/init', function () {
     \App\CurrencyType::create(['name'=>'Crypto']);
     \App\CurrencyType::create(['name'=>'Fiat']);
     \App\Currency::create(['name'=>'CAD','symbol'=>'CAD','currency_type_id'=>2,'coin_market_cap'=>null]);
+    \App\CoinPrice::create(['currency_id'=>'1','price_cad'=>1]);
+    \App\TransactionType::create(['name'=>'Buy']);
+    \App\TransactionType::create(['name'=>'Sell']);
+    \App\TransactionType::create(['name'=>'Investment']);
     return "init done.";
 });

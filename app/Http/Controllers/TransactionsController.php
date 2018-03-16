@@ -11,13 +11,13 @@ class TransactionsController extends Controller
 {
     public function store(Request $request) {
         $this->validate($request, [
-            'fund_id'        =>  'required',
-            'buy_currency_id' =>  'required',
-            'buy_amount' =>  'required|min:0',
-            'buy_price' =>  'required|min:0',
-            'sell_currency_id' =>  'required',
-            'sell_amount'     =>  'required|min:0',
-            'sell_price'     =>  'required|min:0'
+            'fund_id'             =>  'required',
+            'transaction_type_id' =>  'required',
+            'buy_currency_id'     =>  'required',
+            'buy_amount'          =>  'required|min:0',
+            'sell_currency_id'    =>  'required',
+            'sell_amount'         =>  'required|min:0',
+            'rate'                =>  'required|min:0'
         ]);
 
         try {

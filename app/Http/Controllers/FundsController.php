@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Currency;
 use App\Investment;
+use App\TransactionType;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -63,11 +64,14 @@ class FundsController extends Controller
         }
 
         if ($fund->user_id == $user->id) {
-            $unconfirmedInvestments = Investment::all()->where('fund_id', $fund->id)->where('is_approved', false);
-            $availableFunds = Investment::all()->where('fund_id', $fund->id)->where('is_approved', true)->sum('amount');
-            $transactions = $fund->getTransactions()->get();
+            $unconfirmedInvestments = Investment::all()
+                ->where('fund_id', $fund->id)
+                ->where('is_approved', false);
+            $transactions = $fund->transactions()->orderByDesc('created_at')->get();
             $currencies = Currency::all();
-            return view('funds.management', compact('fund', 'unconfirmedInvestments', 'availableFunds', 'transactions', 'currencies'));
+            $transactionTypes = TransactionType::all();
+            return view('funds.management',
+                compact('fund', 'unconfirmedInvestments', 'transactions', 'currencies', 'transactionTypes'));
         }
 
         $investments = Investment::all()->where('user_id', Auth::user()->getAuthIdentifier());

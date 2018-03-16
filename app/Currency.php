@@ -15,4 +15,9 @@ class Currency extends Model
     public function getIdBySymbol($symbol) {
         return $this->where('symbol', $symbol)->id;
     }
+
+    public function latestCoinPrice(){
+        return $this->hasOne('App\CoinPrice', 'currency_id', 'id')->latest();
+    }
+
 }

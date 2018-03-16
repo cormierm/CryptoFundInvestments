@@ -60,7 +60,11 @@ class InvestmentsController extends Controller
             $investment->shares = $this->calculateShares($investment);
             $investment->save();
 
-            Transaction::create(['fund_id'=>$investment->fund->id,'buy_currency_id'=>1,'buy_amount'=>$investment->amount]);
+            Transaction::create([
+                'fund_id'=>$investment->fund->id,
+                'transaction_type_id'=>3,
+                'buy_currency_id'=>1,
+                'buy_amount'=>$investment->amount]);
 
             return redirect()->back()->with('successMessage', 'Investment successfully approved.');
         }
@@ -76,7 +80,7 @@ class InvestmentsController extends Controller
             return $investment->amount;
         }
         else {
-            return $totalShares * ($investment->amount / $fund->getMarketValue());
+            return $totalShares * ($investment->amount / $fund->marketValue());
         }
     }
 }

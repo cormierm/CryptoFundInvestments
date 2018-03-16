@@ -13,7 +13,7 @@
                             {{ session('status') }}
                         </div>
                     @endif
-                    <a href="/funds"><h3>Funds</h3></a>
+                    <a href="/funds"><h3>Your Funds</h3></a>
                     <table class="table">
                         <tr>
                             <th>Fund Name</th>
@@ -24,7 +24,7 @@
                         @foreach ($funds as $fund)
                             <tr>
                                 <td><a href="/funds/{{ $fund->id }}">{{ $fund->name }}</a></td>
-                                <td></td>
+                                <td>${{ $fund->marketValue() }}</td>
                                 <td></td>
                                 <td>{{ $fund->risk->name }}</td>
                             </tr>
