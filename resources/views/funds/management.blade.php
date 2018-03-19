@@ -27,6 +27,7 @@
                         </table>
                         <p><strong>Total Shares:</strong> {{ $fund->totalShares() }}</p>
                         <p><strong>Current Market Value (CAD):</strong> ${{ $fund->marketValue() }}</p>
+                        <p><strong>Share Market Value (CAD):</strong> ${{ $fund->shareMarketValue() }}</p>
 
                         <form method="post" action="/transactions">
                             @csrf

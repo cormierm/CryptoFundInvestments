@@ -30,10 +30,6 @@ class Fund extends Model
         return $this->confirmInvestments()->sum('shares');
     }
 
-    public function getMarketValue() {
-        return 1 * $this->availableCash();
-    }
-
     public function transactions() {
         return $this->hasMany('App\Transaction', 'fund_id', 'id');
     }
@@ -49,11 +45,18 @@ class Fund extends Model
 
         foreach ($this->allBalances() as $symbol => $balance) {
             $currency = Currency::where('symbol', $symbol)->first();
-//            print('symbol: ' . $currency->symbol . ' price: '.$currency->latestCoinPrice->price_cad . ' balance: ' . $balance ) . '<br>' ;
             $value += $currency->latestCoinPrice->price_cad * $balance;
         }
 
         return $value;
+    }
+
+    public function shareMarketValue() {
+        if($this->totalShares() != 0) {
+            return $this->marketValue() / $this->totalShares();
+        }
+
+        return 0;
     }
 
     public function allBalances() {

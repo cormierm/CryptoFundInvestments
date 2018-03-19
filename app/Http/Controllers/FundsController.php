@@ -74,7 +74,7 @@ class FundsController extends Controller
                 compact('fund', 'unconfirmedInvestments', 'transactions', 'currencies', 'transactionTypes'));
         }
 
-        $investments = Investment::all()->where('user_id', Auth::user()->getAuthIdentifier());
+        $investments = Investment::where('user_id', Auth::user()->getAuthIdentifier())->where('fund_id', $id)->get();
 
         return view('funds.show', compact('fund', 'user', 'investments'));
     }
