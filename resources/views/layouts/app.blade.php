@@ -68,6 +68,27 @@
         </div>
         @endif
         <main class="py-4">
+            @if(session('infoMessage'))
+                <div class="container">
+                    <div class="alert alert-info">
+                        {{ session('infoMessage') }}
+                    </div>
+                </div>
+            @endif
+            @if(session('errorMessage'))
+                <div class="container">
+                    <div class="alert alert-danger">
+                        {{ session('errorMessage') }}
+                    </div>
+                </div>
+            @endif
+            @if(session('successMessage'))
+                <div class="container">
+                    <div class="alert alert-success">
+                        {{ session('successMessage') }}
+                    </div>
+                </div>
+            @endif
             @yield('content')
         </main>
     </div>

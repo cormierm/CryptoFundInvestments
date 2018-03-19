@@ -26,7 +26,7 @@ class UsersController extends Controller
     {
         $currentUser = Auth::user();
         $user = User::findOrFail($id);
-        if ($user->roles->has(1))
+        if ($user->isTrader())
         {
             return view('users.profile', compact('user', 'currentUser'));
         }

@@ -11,7 +11,7 @@
                         <p><strong>First Name:</strong> {{ $user->first_name }}</p>
                         <p><strong>Last Name:</strong> {{ $user->last_name }}</p>
                         <p><strong>Phone:</strong> {{ $user->phone }}</p>
-                        @if ($user->roles->has(1))
+                        @if ($user->isTrader())
                             <p><strong>Trader Title:</strong> {{ $user->trader_title }}</p>
                             <p><strong>Trader Description:</strong> {{ $user->trader_description }}</p>
                         @endif

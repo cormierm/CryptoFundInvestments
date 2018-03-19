@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Investment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -25,11 +26,14 @@ class HomeController extends Controller
 
     public function dashboard()
     {
-        if (Auth::user()->roles->has(1))
+        if (Auth::user()->isTrader())
         {
             $funds = Auth::user()->funds;
             return view('trader_dashboard', compact('funds'));
         }
-        return view('client_dashboard');
+
+        $investments = Investment::where('user_id', Auth::user()->getAuthIdentifier())->get();
+
+        return view('client_dashboard', compact('investments'));
     }
 }

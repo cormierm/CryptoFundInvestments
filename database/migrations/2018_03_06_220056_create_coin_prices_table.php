@@ -16,20 +16,20 @@ class CreateCoinPricesTable extends Migration
         Schema::create('coin_prices', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('currency_id');
-            $table->integer('rank');
-            $table->double('price_btc');
-            $table->double('price_usd');
-            $table->double('price_cad');
-            $table->double('market_cap_usd');
-            $table->double('market_cap_cad');
-            $table->double('volume_usd');
-            $table->double('volume_cad');
-            $table->double('available_supply');
-            $table->double('total_supply');
-            $table->double('max_supply')->nullable();
-            $table->double('percent_change_hour');
-            $table->double('percent_change_day');
-            $table->double('percent_change_week');
+            $table->integer('rank')->nullable()->default(null);
+            $table->double('price_btc')->nullable()->default(null);
+            $table->double('price_usd')->nullable()->default(null);
+            $table->double('price_cad')->nullable()->default(null);
+            $table->double('market_cap_usd')->nullable()->default(null);
+            $table->double('market_cap_cad')->nullable()->default(null);
+            $table->double('volume_usd')->nullable()->default(null);
+            $table->double('volume_cad')->nullable()->default(null);
+            $table->double('available_supply')->nullable()->default(null);
+            $table->double('total_supply')->nullable()->default(null);
+            $table->double('max_supply')->nullable()->default(null);
+            $table->double('percent_change_hour')->nullable()->default(null);
+            $table->double('percent_change_day')->nullable()->default(null);
+            $table->double('percent_change_week')->nullable()->default(null);
             $table->timestamps();
         });
     }

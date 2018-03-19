@@ -1,0 +1,12 @@
+{
+  "currencies": ["BTC", "ETH", "XMR", "PIVX", "NEO", "XRB", "LTC", "ZEC"],
+  "cycle_delay": 300,
+  "coin_limit": 1000,
+  "database": {
+    "host": "localhost",
+    "port": 3306,
+    "user": "root",
+    "password": "",
+    "db_name": "cfi"
+  }
+}

@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Currency;
+use App\Investment;
+use App\TransactionType;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Fund;
@@ -24,10 +28,13 @@ class FundsController extends Controller
 
     public function create()
     {
+        if (Auth::user()->isTrader()) {
+            $user_id = Auth::user()->getAuthIdentifier();
+            $risks = Risk::all();
+            return view('funds.create', compact('risks', 'user_id'));
+        }
+        return redirect('/funds');
 
-        $user_id = Auth::user()->getAuthIdentifier();
-        $risks = Risk::all();
-        return view('funds.create', compact('risks', 'user_id'));
     }
 
     public function store(Request $request)
@@ -47,9 +54,29 @@ class FundsController extends Controller
     public function show($id)
     {
         $user = Auth::user();
-        $fund = Fund::findOrFail($id);
 
-        return view('funds.show', compact('fund', 'user'));
+        try {
+            $fund = Fund::findOrFail($id);
+
+        }
+        catch (ModelNotFoundException $ex) {
+            return redirect()->back()->with('errorMessage', 'There was an error retrieving fund');
+        }
+
+        if ($fund->user_id == $user->id) {
+            $unconfirmedInvestments = Investment::all()
+                ->where('fund_id', $fund->id)
+                ->where('is_approved', false);
+            $transactions = $fund->transactions()->orderByDesc('created_at')->get();
+            $currencies = Currency::all();
+            $transactionTypes = TransactionType::all();
+            return view('funds.management',
+                compact('fund', 'unconfirmedInvestments', 'transactions', 'currencies', 'transactionTypes'));
+        }
+
+        $investments = Investment::where('user_id', Auth::user()->getAuthIdentifier())->where('fund_id', $id)->get();
+
+        return view('funds.show', compact('fund', 'user', 'investments'));
     }
 
     public function edit($id)
