@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Fund;
 use App\Investment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -34,6 +35,11 @@ class HomeController extends Controller
 
         $investments = Investment::where('user_id', Auth::user()->getAuthIdentifier())->get();
 
-        return view('client_dashboard', compact('investments'));
+        $funds = array();
+        foreach(Investment::selectRaw('fund_id')->groupBy('fund_id')->get() as $fund) {
+            $funds[] = Fund::find($fund->fund_id);
+        }
+
+        return view('client_dashboard', compact('investments', 'funds'));
     }
 }

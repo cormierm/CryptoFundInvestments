@@ -19,6 +19,28 @@
 
                 </div>
             </div>
+            @if(count($funds) > 0)
+                <br>
+                <div class="card card-default">
+                    <div class="card-header">Your Funds</div>
+                    <div class="card-body">
+                        <table class="table">
+                            <tr>
+                                <th>Fund Name</th>
+                                <th>Fund Market Value(CAD)</th>
+                                <th>Your Market Value(CAD)</th>
+                            </tr>
+                            @foreach ($funds as $fund)
+                                <tr>
+                                    <td><a href="/funds/{{ $fund->id }}">{{ $fund->name }}</a></td>
+                                    <td>${{ number_format($fund->marketValue(), 2) }}</td>
+                                    <td>${{ number_format($fund->userMarketValue(), 2) }}</td>
+                                </tr>
+                            @endforeach
+                        </table>
+                    </div>
+                </div>
+            @endif
             @if($investments->count() > 0)
                 <br>
                 <div class="card card-default">
@@ -38,8 +60,8 @@
                                 <tr>
                                     <td><a href="/funds/{{ $investment->fund->id }}">{{ $investment->fund->name }}</a></td>
                                     <td>${{ $investment->amount }}</td>
-                                    <td>{{ $investment->shares }}</td>
-                                    <td>${{ $investment->shares * $investment->fund->shareMarketValue() }}</td>
+                                    <td>{{ number_format($investment->shares, 2) }}</td>
+                                    <td>${{ number_format($investment->marketValue(), 2) }}</td>
                                     <td>
                                         @if($investment->is_approved) Yes
                                         @else No

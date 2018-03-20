@@ -15,4 +15,8 @@ class Investment extends Model
     public function fund() {
         return $this->hasOne('App\Fund', 'id', 'fund_id');
     }
+
+    public function marketValue() {
+        return $this->attributes['shares'] * $this->fund->shareMarketValue();
+    }
 }

@@ -41,7 +41,7 @@ use App\Role;
 use App\Risk;
 Route::get('/test', function () {
     $fund = App\Fund::find(1);
-    return $fund->marketValue();
+    return $fund->userMarketValue();
 //    $coin = App\Currency::all()->where('symbol', 'CAD')->first;
 //    print($coin->latestCoinPrice->price_cad);
 });
