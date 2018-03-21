@@ -28,7 +28,7 @@ class HomeController extends Controller
 
     public function dashboard()
     {
-        $coins = Currency::all()->where('symbol', '!=', 'CAD');
+        $coins = Currency::where('symbol', '!=', 'CAD')->orderBy('name')->get();
 
         if (Auth::user()->isTrader())
         {

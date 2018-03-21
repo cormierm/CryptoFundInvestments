@@ -24,7 +24,7 @@
                         @foreach ($funds as $fund)
                             <tr>
                                 <td><a href="/funds/{{ $fund->id }}">{{ $fund->name }}</a></td>
-                                <td>${{ $fund->marketValue() }}</td>
+                                <td>${{ number_format($fund->marketValue(), 2) }}</td>
                                 <td></td>
                                 <td>{{ $fund->risk->name }}</td>
                             </tr>
