@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Currency;
 use App\Fund;
 use App\Investment;
 use Illuminate\Http\Request;
@@ -27,10 +28,12 @@ class HomeController extends Controller
 
     public function dashboard()
     {
+        $coins = Currency::all()->where('symbol', '!=', 'CAD');
+
         if (Auth::user()->isTrader())
         {
             $funds = Auth::user()->funds;
-            return view('trader_dashboard', compact('funds'));
+            return view('trader_dashboard', compact('funds', 'coins'));
         }
 
         $investments = Investment::where('user_id', Auth::user()->getAuthIdentifier())->get();
@@ -40,6 +43,6 @@ class HomeController extends Controller
             $funds[] = Fund::find($fund->fund_id);
         }
 
-        return view('client_dashboard', compact('investments', 'funds'));
+        return view('client_dashboard', compact('investments', 'funds', 'coins'));
     }
 }
