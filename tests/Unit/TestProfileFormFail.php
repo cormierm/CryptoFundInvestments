@@ -13,11 +13,11 @@ class TestProfileFormFail extends TestCase
      *
      * @return void
      */
-    public function testExample()
+    public function TestProfileFormFail()
     {
-         $this->visit('/profile/edit')
+        $this->visit('/profile/edit')
 			 ->type('test1@gmail.com', 'email')
 			 ->press('UpdateProfile')
-			 ->seePageIs('/profile/edit')
+			 ->seePageIs('/profile/edit');
     }
 }

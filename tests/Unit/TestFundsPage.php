@@ -13,10 +13,10 @@ class TestFundsPage extends TestCase
      *
      * @return void
      */
-    public function testExample()
+    public function TestFundsPage()
     {
         $this->visit('/')
 			 ->click('Funds')
-			 ->seePageId('funds')
+			 ->seePageIs('funds');
     }
 }
