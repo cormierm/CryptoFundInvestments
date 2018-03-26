@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card card-default">
-                <div class="card-header">{{ Auth::user()->first_name }}'s Dashboard</div>
+                <div class="card-header">{{ Auth::user()->first_name }}'s Trader Dashboard</div>
 
                 <div class="card-body">
                     @if (session('status'))
@@ -13,7 +13,7 @@
                             {{ session('status') }}
                         </div>
                     @endif
-                    <a href="/funds"><h3>Your Funds</h3></a>
+                    <h3>Your Funds</h3>
                     <table class="table">
                         <tr>
                             <th>Fund Name</th>
