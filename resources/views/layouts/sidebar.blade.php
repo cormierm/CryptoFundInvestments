@@ -11,7 +11,7 @@
     <a href="/profile">Profile</a>
     <a href="/dashboard">Dashboard</a>
     <a href="/funds">Funds</a>
-    <a href="#">Coin Lookup</a>
+    <a href="/coinlookup">Coin Lookup</a>
     <a href="{{ route('logout') }}"
             onclick="event.preventDefault();
                             document.getElementById('logout-form').submit();">

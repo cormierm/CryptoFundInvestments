@@ -35,6 +35,8 @@ Route::post('/investments/approve', 'InvestmentsController@approve');
 
 Route::post('/transactions', 'TransactionsController@store');
 
+Route::get('/coinlookup', 'CoinLookupController@index');
+
 
 
 use App\Role;
