@@ -25,9 +25,9 @@
                                 </tr>
                             @endforeach
                         </table>
-                        <p><strong>Total Shares:</strong> {{ $fund->totalShares() }}</p>
-                        <p><strong>Current Market Value (CAD):</strong> ${{ $fund->marketValue() }}</p>
-                        <p><strong>Share Market Value (CAD):</strong> ${{ $fund->shareMarketValue() }}</p>
+                        <p><strong>Total Shares:</strong> {{ number_format($fund->totalShares(),2) }}</p>
+                        <p><strong>Current Market Value (CAD):</strong> ${{ number_format($fund->marketValue(), 2) }}</p>
+                        <p><strong>Share Market Value (CAD):</strong> ${{ number_format($fund->shareMarketValue(), 2) }}</p>
 
                         <form method="post" action="/transactions">
                             @csrf

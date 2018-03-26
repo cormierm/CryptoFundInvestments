@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\PaginationServiceProvider;
+use Illuminate\Support\Facades\Auth;
 
 class Fund extends Model
 {
@@ -83,5 +84,14 @@ class Fund extends Model
         }
 
         return $bals;
+    }
+
+    public function userMarketValue() {
+        $investments = $this->confirmInvestments()->where('user_id', Auth::user()->getAuthIdentifier())->get();
+        $value = 0;
+        foreach($investments as $investment) {
+            $value += $investment->marketValue();
+        }
+        return $value;
     }
 }

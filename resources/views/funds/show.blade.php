@@ -27,9 +27,9 @@
                                 </tr>
                             @endforeach
                         </table>
-                        <p><strong>Total Shares:</strong> {{ $fund->totalShares() }}</p>
-                        <p><strong>Current Market Value (CAD):</strong> ${{ $fund->marketValue() }}</p>
-                        <p><strong>Share Market Value (CAD):</strong> ${{ $fund->shareMarketValue() }}</p>
+                        <p><strong>Total Shares:</strong> {{ number_format($fund->totalShares(), 2) }}</p>
+                        <p><strong>Current Market Value (CAD):</strong> ${{ number_format($fund->marketValue(), 2) }}</p>
+                        <p><strong>Share Market Value (CAD):</strong> ${{ number_format($fund->shareMarketValue(), 2) }}</p>
 
 
                         @if ($fund->user_id == Auth::user()->getAuthIdentifier())
@@ -48,15 +48,15 @@
                                 <tr>
                                     <th>Investment(CAD)</th>
                                     <th>Shares</th>
-                                    <th>Market Value(CAD)</th>
+                                    <th>Current Market Value(CAD)</th>
                                     <th>Approved</th>
                                     <th>Created on</th>
                                 </tr>
                                 @foreach ($investments as $investment)
                                     <tr>
-                                        <td>${{ $investment->amount }}</td>
-                                        <td>{{ $investment->shares }}</td>
-                                        <td>${{ $investment->shares * $fund->shareMarketValue() }}</td>
+                                        <td>${{ number_format($investment->amount, 2) }}</td>
+                                        <td>{{ number_format($investment->shares, 2) }}</td>
+                                        <td>${{ number_format($investment->marketValue(), 2) }}</td>
                                         <td>
                                             @if($investment->is_approved) Yes
                                             @else No
