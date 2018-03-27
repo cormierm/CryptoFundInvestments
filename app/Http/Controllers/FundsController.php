@@ -82,9 +82,10 @@ class FundsController extends Controller
 
         $fundsRemoval = $user->fundsRemovalRequests($fund->id);
 
-        $investments = Investment::where('user_id', Auth::user()->getAuthIdentifier())->where('fund_id', $id)->get();
+        $confirmedInvestments = Investment::where('user_id', Auth::user()->getAuthIdentifier())->where('fund_id', $id)->where('is_approved', true)->get();
+        $unconfirmedInvestments = Investment::where('user_id', Auth::user()->getAuthIdentifier())->where('fund_id', $id)->where('is_approved', false)->get();
 
-        return view('funds.show', compact('fund', 'user', 'investments', 'transactions', 'fundsRemoval'));
+        return view('funds.show', compact('fund', 'user', 'confirmedInvestments', 'unconfirmedInvestments', 'transactions', 'fundsRemoval'));
     }
 
     public function edit($id)
