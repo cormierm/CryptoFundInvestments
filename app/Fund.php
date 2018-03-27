@@ -94,4 +94,27 @@ class Fund extends Model
         }
         return $value;
     }
+
+    public function userShares() {
+        $investments = $this->confirmInvestments()->where('user_id', Auth::user()->getAuthIdentifier())->get();
+        $value = 0;
+        foreach($investments as $investment) {
+            $value += $investment->shares;
+        }
+        return $value;
+    }
+
+    public function userAvailableShares() {
+        $investments = $this->confirmInvestments()->where('user_id', Auth::user()->getAuthIdentifier())->get();
+        $value = 0;
+        foreach($investments as $investment) {
+            $value += $investment->shares;
+        }
+
+        $fundsRemoval = FundsRemoval::where('user_id', Auth::user()->getAuthIdentifier())->where('fund_id', $this->attributes['id'])->get();
+        foreach($fundsRemoval as $fr) {
+            $value -= $fr->share_amount;
+        }
+        return $value;
+    }
 }

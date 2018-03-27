@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Fund;
+use App\FundsRemoval;
 use App\Investment;
 use App\Transaction;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -82,5 +83,46 @@ class InvestmentsController extends Controller
         else {
             return $totalShares * ($investment->amount / $fund->marketValue());
         }
+    }
+
+    public function removal($fundId) {
+        try {
+            $fund = Fund::findOrFail($fundId);
+        }
+        catch (ModelNotFoundException $ex) {
+            return redirect()->back()->with('errorMessage', 'There was an error retrieving fund');
+        }
+
+        $user = Auth::user();
+
+        $availableFunds = $fund->userMarketValue();
+        $availableShares = $fund->userAvailableShares();
+
+        if ($availableShares <= 0) {
+            return redirect()->back()->with('errorMessage', 'You do not have any available shares in this fund');
+        }
+
+        return view('investments.removal', compact('fund', 'availableFunds', 'availableShares'));
+    }
+
+    public function removalRequest(Request $request)
+    {
+        $this->validate($request, [
+            'amount' => 'required'
+        ]);
+
+        $fund = Fund::findOrFail($request->fund_id);
+
+        if ($fund->userAvailableShares() < $request->amount) {
+            return redirect()->back()->with('errorMessage', 'You do not have any shares for that request');
+        }
+
+        FundsRemoval::create([
+            'user_id'      => Auth::user()->getAuthIdentifier(),
+            'fund_id'      => $fund->id,
+            'share_amount' => $request->amount
+        ]);
+
+        return redirect('/funds/' . $fund->id)->with('successMessage', 'Successfully submitted investment removal request');
     }
 }

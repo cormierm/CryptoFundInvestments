@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\FundsRemoval;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\User;
@@ -99,4 +100,5 @@ class UsersController extends Controller
         return redirect()->back()->with("successPassword","Password changed successfully!");
 
     }
+
 }

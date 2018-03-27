@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Currency;
+use App\FundsRemoval;
 use App\Investment;
 use App\TransactionType;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -74,9 +75,13 @@ class FundsController extends Controller
                 compact('fund', 'unconfirmedInvestments', 'transactions', 'currencies', 'transactionTypes'));
         }
 
+        $transactions = $fund->transactions()->orderByDesc('created_at')->get();
+
+        $fundsRemoval = $user->fundsRemovalRequests($fund->id);
+
         $investments = Investment::where('user_id', Auth::user()->getAuthIdentifier())->where('fund_id', $id)->get();
 
-        return view('funds.show', compact('fund', 'user', 'investments'));
+        return view('funds.show', compact('fund', 'user', 'investments', 'transactions', 'fundsRemoval'));
     }
 
     public function edit($id)

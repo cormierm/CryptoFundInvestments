@@ -2,8 +2,8 @@
 
 @section('content')
     <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-5">
                 <div class="card card-default">
                     <div class="card-header">Fund Details</div>
 
@@ -36,6 +36,7 @@
                             <a href="/funds/{{ $fund->id }}/edit"><button class="btn btn-primary">Edit Fund</button></a>
                         @endif
                         <a href="/investments/create/{{ $fund->id }}"><button class="btn btn-danger">Invest In Fund</button></a>
+                        <a href="/investments/removal/{{ $fund->id }}"><button class="btn btn-danger">Request Investment Removal</button></a>
                     </div>
                 </div>
                 @if($investments->count() > 0)
@@ -69,6 +70,69 @@
                         </div>
                     </div>
                 @endif
+                @if($fundsRemoval->count() > 0)
+                    <br>
+                    <div class="card card-default">
+                        <div class="card-header">Pending Fund Removal Requests</div>
+
+                        <div class="card-body">
+                            <table class="table">
+                                <tr>
+                                    <th>Shares Amount</th>
+                                    <th>Market Value(CAD)</th>
+                                    <th>Created on</th>
+                                </tr>
+                                @foreach ($fundsRemoval as $fr)
+                                    <tr>
+                                        <td>${{ $fr->share_amount }}</td>
+                                        <td>${{ number_format($fr->marketValue(), 2) }}</td>
+                                        <td>{{ $fr->created_at }}</td>
+                                    </tr>
+                                @endforeach
+                            </table>
+                        </div>
+                    </div>
+                @endif
+            </div>
+            <div class="col-md-7">
+                <div class="card card-default">
+                    <div class="card-header">Transaction History</div>
+                    <div class="card-body">
+                        <table class="table">
+                            <tr>
+                                <th>Type</th>
+                                <th>Buy Currency</th>
+                                <th>Buy Amount</th>
+                                <th>Sell Currency</th>
+                                <th>Sell Amount</th>
+                                <th>Rate</th>
+                                <th>Submitted on</th>
+                            </tr>
+
+                            @foreach($transactions as $transaction)
+                                <tr>
+                                    <td>
+                                        {{ $transaction->type->name }}
+                                    </td>
+                                    <td>
+                                        @if($transaction->buy_currency)
+                                            {{  $transaction->buy_currency->name }}
+                                        @endif
+                                    </td>
+                                    <td>{{  $transaction->buy_amount }}</td>
+                                    <td>
+                                        @if($transaction->sell_currency)
+                                            {{  $transaction->sell_currency->name }}
+                                        @endif
+                                    </td>
+                                    <td>{{  $transaction->sell_amount }}</td>
+                                    <td>{{ $transaction->rate }}</td>
+                                    <td>{{  $transaction->created_at }}</td>
+                                </tr>
+                            @endforeach
+
+                        </table>
+                    </div>
             </div>
         </div>
     </div>

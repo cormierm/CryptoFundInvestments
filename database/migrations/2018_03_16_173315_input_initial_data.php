@@ -45,6 +45,12 @@ class InputInitialData extends Migration
             ['name'=>'CAD','symbol'=>'CAD','currency_type_id'=>2,'coin_market_cap_id'=>null]
         );
 
+        DB::table('coin_prices')->insert(['currency_id'=>'1','price_cad'=>1]);
+
+        // Transaction Types
+        DB::table('transaction_types')->insert(['name'=>'Buy']);
+        DB::table('transaction_types')->insert(['name'=>'Sell']);
+        DB::table('transaction_types')->insert(['name'=>'Investment']);
     }
 
     /**
