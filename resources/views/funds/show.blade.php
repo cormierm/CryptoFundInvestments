@@ -39,6 +39,37 @@
                         <a href="/investments/removal/{{ $fund->id }}"><button class="btn btn-danger">Request Investment Removal</button></a>
                     </div>
                 </div>
+                @if($fundsRemoval->count() > 0)
+                    <br>
+                    <div class="card card-default">
+                        <div class="card-header">Pending Fund Removal Requests</div>
+
+                        <div class="card-body">
+                            <table class="table">
+                                <tr>
+                                    <th>Shares Amount</th>
+                                    <th>Market Value(CAD)</th>
+                                    <th>Created on</th>
+                                    <th></th>
+                                </tr>
+                                @foreach ($fundsRemoval as $fr)
+                                    <tr>
+                                        <td>${{ $fr->share_amount }}</td>
+                                        <td>${{ number_format($fr->marketValue(), 2) }}</td>
+                                        <td>{{ $fr->created_at }}</td>
+                                        <td>
+                                            <form method="post" action="/investments/remove/cancel">
+                                                @csrf
+                                                <input type="hidden" name="removal_id" id="removal_id" value="{{ $fr->id }}"/>
+                                                <input type="submit" value="Cancel" class="btn btn-danger"/>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </table>
+                        </div>
+                    </div>
+                @endif
                 @if($investments->count() > 0)
                     <br>
                     <div class="card card-default">
@@ -70,29 +101,7 @@
                         </div>
                     </div>
                 @endif
-                @if($fundsRemoval->count() > 0)
-                    <br>
-                    <div class="card card-default">
-                        <div class="card-header">Pending Fund Removal Requests</div>
 
-                        <div class="card-body">
-                            <table class="table">
-                                <tr>
-                                    <th>Shares Amount</th>
-                                    <th>Market Value(CAD)</th>
-                                    <th>Created on</th>
-                                </tr>
-                                @foreach ($fundsRemoval as $fr)
-                                    <tr>
-                                        <td>${{ $fr->share_amount }}</td>
-                                        <td>${{ number_format($fr->marketValue(), 2) }}</td>
-                                        <td>{{ $fr->created_at }}</td>
-                                    </tr>
-                                @endforeach
-                            </table>
-                        </div>
-                    </div>
-                @endif
             </div>
             <div class="col-md-7">
                 <div class="card card-default">
