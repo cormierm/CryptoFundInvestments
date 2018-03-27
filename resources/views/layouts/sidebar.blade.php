@@ -9,6 +9,9 @@
 <div class="dashboardsidebar">
     {{--<img src="#" alt="Profile Picture">--}}
     <a href="/dashboard">Dashboard</a>
+    @if(App\User::find(Auth::user()->getAuthIdentifier())->isAdmin())
+        <a href="/admin">Admin Portal</a>
+    @endif
     <a href="/funds">Funds</a>
     <a href="/coinlookup">Coin Lookup</a>
     <a href="/profile">Profile</a>

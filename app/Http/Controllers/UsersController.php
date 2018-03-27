@@ -23,6 +23,19 @@ class UsersController extends Controller
         return view('users.profile', compact('user', 'currentUser'));
     }
 
+    public function userProfile($id)
+    {
+        $user = User::findOrFail(Auth::user()->getAuthIdentifier());
+
+        if ($user->isAdmin()) {
+            $user = User::findOrFail($id);
+
+            return view('users.profile', compact('user'));
+        }
+
+        return redirect()->back()->with('errorMessage', 'You do not have permissions to view that page');
+    }
+
     public function trader($id)
     {
         $currentUser = Auth::user();
@@ -65,13 +78,6 @@ class UsersController extends Controller
         }
 
         $user->update($request->all());
-        return redirect('/profile');
-    }
-
-    public function apply_trader_role()
-    {
-        $user = Auth::user();
-        $user->roles()->sync([1,2]);
         return redirect('/profile');
     }
 

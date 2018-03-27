@@ -15,19 +15,18 @@
                             <p><strong>Trader Title:</strong> {{ $user->trader_title }}</p>
                             <p><strong>Trader Description:</strong> {{ $user->trader_description }}</p>
                         @endif
-                        @if ($currentUser->id == $user->id)
-                            <a href="/profile/edit"><button class="btn btn-primary">Edit Profile</button></a>
 
-                            @if (!$user->isTrader())
-                                <form method="post" action="/profile/requestTraderRole">
-                                    @csrf
-                                    <input type="submit" class="btn btn-primary" value="Request to be Trader" />
-                                </form>
-                            @else
-                                <a href="/profile/remove_trader_role"><button class="btn btn-danger">Remove trader role</button></a>
-                            @endif
+                        <a href="/profile/edit"><button class="btn btn-primary">Edit Profile</button></a>
 
+                        @if (!$user->isTrader())
+                            <form method="post" action="/profile/requestTraderRole">
+                                @csrf
+                                <input type="submit" class="btn btn-primary" value="Request to be Trader" />
+                            </form>
+                        @else
+                            <a href="/profile/remove_trader_role"><button class="btn btn-danger">Remove trader role</button></a>
                         @endif
+
                         </div>
                 </div>
             </div>

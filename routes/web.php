@@ -20,6 +20,7 @@ Auth::routes();
 Route::get('/dashboard', 'HomeController@dashboard');
 
 Route::get('/profile', 'UsersController@profile');
+Route::get('/user/{id}', 'UsersController@userProfile');
 Route::get('/trader/{id}', 'UsersController@trader');
 Route::get('/profile/edit', 'UsersController@edit');
 Route::post('/profile/edit', 'UsersController@update');
@@ -42,6 +43,9 @@ Route::get('/coinlookup', 'CoinLookupController@index');
 Route::post('/investments/remove/cancel', 'FundsRemovalController@cancel');
 Route::post('/investments/remove/approve', 'FundsRemovalController@approve');
 
+Route::get('/admin', 'AdminController@index');
+Route::post('/admin/approveTraderRequest', 'AdminController@approveTraderRequest');
+Route::get('/admin/cancelTraderRequest', 'AdminController@cancelTraderRequest');
 
 
 use App\Role;

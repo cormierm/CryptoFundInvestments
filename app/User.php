@@ -40,7 +40,7 @@ class User extends Authenticatable
     }
 
     public function isTrader() {
-        if ($this->roles->has(1))
+        if ($this->roles->where('name', 'Trader')->count())
         {
             return true;
         }
@@ -48,7 +48,7 @@ class User extends Authenticatable
     }
 
     public function isAdmin() {
-        if ($this->roles->has(3))
+        if ($this->roles->where('name', 'Admin')->count())
         {
             return true;
         }
