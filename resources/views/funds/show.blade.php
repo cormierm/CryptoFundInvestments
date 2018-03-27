@@ -35,7 +35,7 @@
                         @if ($fund->user_id == Auth::user()->getAuthIdentifier())
                             <a href="/funds/{{ $fund->id }}/edit"><button class="btn btn-primary">Edit Fund</button></a>
                         @endif
-                        <a href="/investments/create/{{ $fund->id }}"><button class="btn btn-danger">Invest In Fund</button></a>
+                        <a href="/investments/create/{{ $fund->id }}"><button class="btn btn-info">Invest In Fund</button></a>
                         <a href="/investments/removal/{{ $fund->id }}"><button class="btn btn-danger">Request Investment Removal</button></a>
                     </div>
                 </div>
