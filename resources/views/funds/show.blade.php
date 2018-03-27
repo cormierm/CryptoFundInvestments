@@ -73,7 +73,7 @@
                 @if($investments->count() > 0)
                     <br>
                     <div class="card card-default">
-                        <div class="card-header">Your Investments</div>
+                        <div class="card-header">Your Investment History</div>
 
                         <div class="card-body">
                             <table class="table">
@@ -88,7 +88,7 @@
                                     <tr>
                                         <td>${{ number_format($investment->amount, 2) }}</td>
                                         <td>{{ number_format($investment->shares, 2) }}</td>
-                                        <td>${{ number_format($investment->marketValue(), 2) }}</td>
+                                        <td>${{ number_format(abs($investment->marketValue()), 2) }}</td>
                                         <td>
                                             @if($investment->is_approved) Yes
                                             @else No

@@ -40,6 +40,7 @@ Route::post('/transactions', 'TransactionsController@store');
 Route::get('/coinlookup', 'CoinLookupController@index');
 
 Route::post('/investments/remove/cancel', 'FundsRemovalController@cancel');
+Route::post('/investments/remove/approve', 'FundsRemovalController@approve');
 
 
 

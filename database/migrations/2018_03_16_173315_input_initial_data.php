@@ -51,6 +51,7 @@ class InputInitialData extends Migration
         DB::table('transaction_types')->insert(['name'=>'Buy']);
         DB::table('transaction_types')->insert(['name'=>'Sell']);
         DB::table('transaction_types')->insert(['name'=>'Investment']);
+        DB::table('transaction_types')->insert(['name'=>'Investment Withdraw']);
     }
 
     /**

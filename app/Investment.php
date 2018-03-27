@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Investment extends Model
 {
-    protected $fillable = ['user_id', 'fund_id', 'amount'];
+    protected $fillable = ['user_id', 'fund_id', 'amount', 'shares', 'is_approved'];
 
     public function user() {
         return $this->hasOne('App\User', 'id', 'user_id');

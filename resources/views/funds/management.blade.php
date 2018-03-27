@@ -114,6 +114,39 @@
                         </div>
                     </div>
                 @endif
+                @if($pendingFundRemovals->count() > 0)
+                    <br>
+                    <div class="card card-default">
+                        <div class="card-header">Pending Fund Removal Requests</div>
+
+                        <div class="card-body">
+                            <table class="table">
+                                <tr>
+                                    <th>Client</th>
+                                    <th>Shares Amount</th>
+                                    <th>Market Value(CAD)</th>
+                                    <th>Created on</th>
+                                    <th></th>
+                                </tr>
+                                @foreach ($pendingFundRemovals as $fr)
+                                    <tr>
+                                        <td>{{ $fr->user->email }}</td>
+                                        <td>${{ $fr->share_amount }}</td>
+                                        <td>${{ number_format($fr->marketValue(), 2) }}</td>
+                                        <td>{{ $fr->created_at }}</td>
+                                        <td>
+                                            <form method="post" action="/investments/remove/approve">
+                                                @csrf
+                                                <input type="hidden" name="removal_id" id="removal_id" value="{{ $fr->id }}"/>
+                                                <input type="submit" value="Approve" class="btn btn-danger"/>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </table>
+                        </div>
+                    </div>
+                @endif
                 <br>
                 <div class="card card-default">
                     <div class="card-header">Transaction History</div>
