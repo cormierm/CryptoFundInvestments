@@ -24,7 +24,6 @@
                             </tr>
                         @endforeach
                     </table>
-                    <a href="/funds"><button class="btn btn-primary">All Funds</button></a>
                     @if ($user->isTrader())
                         <a href="/funds/create"><button class="btn btn-primary">Create Fund</button></a>
                     @endif
