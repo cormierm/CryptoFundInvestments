@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\FundsRemoval;
+use App\TraderRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\User;
@@ -99,6 +99,24 @@ class UsersController extends Controller
 
         return redirect()->back()->with("successPassword","Password changed successfully!");
 
+    }
+
+    public function requestTraderRole(Request $qwer) {
+        $user = User::find(Auth::user()->getAuthIdentifier());
+
+        if($user->isTrader()) {
+            return redirect()->back()->with("errorMessage", "You are already a Trader");
+        }
+
+        if (TraderRequest::where('user_id', $user->id)->count() == 0) {
+            TraderRequest::create(['user_id'=>$user->id]);
+            return redirect()->back()->with("successMessage", "Successfully submitted request for Trader role");
+        }
+        else {
+            return redirect()->back()->with("errorMessage", "There is a request for Trader role");
+        }
+
+        return redirect()->back()->with("errorMessage", "Error processing request for Trader role");
     }
 
 }

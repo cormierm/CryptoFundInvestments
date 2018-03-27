@@ -20,6 +20,9 @@ class InputInitialData extends Migration
         DB::table('roles')->insert(
             ['name' => 'Client']
         );
+        DB::table('roles')->insert(
+            ['name' => 'Admin']
+        );
 
         //Risks
         DB::table('risks')->insert(

@@ -17,11 +17,16 @@
                         @endif
                         @if ($currentUser->id == $user->id)
                             <a href="/profile/edit"><button class="btn btn-primary">Edit Profile</button></a>
-                            @if (!$user->roles->has(1))
-                                <a href="/profile/apply_trader_role"><button class="btn btn-primary">Apply to be trader</button></a>
+
+                            @if (!$user->isTrader())
+                                <form method="post" action="/profile/requestTraderRole">
+                                    @csrf
+                                    <input type="submit" class="btn btn-primary" value="Request to be Trader" />
+                                </form>
                             @else
                                 <a href="/profile/remove_trader_role"><button class="btn btn-danger">Remove trader role</button></a>
                             @endif
+
                         @endif
                         </div>
                 </div>
