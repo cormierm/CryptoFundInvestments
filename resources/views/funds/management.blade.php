@@ -159,7 +159,7 @@
                                 <th>Sell Currency</th>
                                 <th>Sell Amount</th>
                                 <th>Rate</th>
-                                <th>Submitted on</th>
+                                <th>Timestamp</th>
                             </tr>
 
                             @foreach($transactions as $transaction)
@@ -172,14 +172,23 @@
                                             {{  $transaction->buy_currency->name }}
                                         @endif
                                     </td>
-                                    <td>{{  $transaction->buy_amount }}</td>
+                                    <td>
+                                        @if($transaction->buy_amount != 0)
+                                            {{  $transaction->buy_amount }}</td>
+                                    @endif
                                     <td>
                                         @if($transaction->sell_currency)
                                             {{  $transaction->sell_currency->name }}
                                         @endif
                                     </td>
-                                    <td>{{  $transaction->sell_amount }}</td>
-                                    <td>{{ $transaction->rate }}</td>
+                                    <td>
+                                        @if($transaction->sell_amount != 0)
+                                            {{  $transaction->sell_amount }}</td>
+                                    @endif
+                                    <td>
+                                        @if($transaction->rate != 0)
+                                            {{ $transaction->rate }}</td>
+                                    @endif
                                     <td>{{  $transaction->created_at }}</td>
                                 </tr>
                             @endforeach
