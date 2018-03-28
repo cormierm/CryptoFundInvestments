@@ -4,6 +4,16 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-12">
+                @if ($user->isTrader())
+                    <div class="card card-default">
+                        <div class="card-header">Trader Profile Information</div>
+                        <div class="card-body">
+                            <p><strong>Trader Title:</strong> {{ $user->trader_title }}</p>
+                            <p><strong>Trader Description:</strong> {{ $user->trader_description }}</p>
+                        </div>
+                    </div>
+                    <br>
+                @endif
                 <div class="card card-default">
                     <div class="card-header">{{ $user->first_name }}'s Profile</div>
                         <div class="card-body">
@@ -28,17 +38,7 @@
 
                         </div>
                 </div>
-                @if ($user->isTrader())
-                    <br>
 
-                    <div class="card card-default">
-                        <div class="card-header">Trader Profile Information</div>
-                        <div class="card-body">
-                            <p><strong>Trader Title:</strong> {{ $user->trader_title }}</p>
-                            <p><strong>Trader Description:</strong> {{ $user->trader_description }}</p>
-                        </div>
-                    </div>
-                @endif
             </div>
         </div>
     </div>
