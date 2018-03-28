@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container">
-        <div class="row">
+        <div class="row justify-content-center">
             <div class="col-lg-6">
                 <div class="card card-default">
                     <div class="card-header">
@@ -25,7 +25,18 @@
                         <p><strong>Description:</strong> {{ $fund->description }}</p>
                         <p><strong>Risk:</strong> {{ $fund->risk->name }}</p>
                         <p><strong>Creator:</strong> <a href="/trader/{{ $fund->user_id }}">{{ $fund->user->first_name . " " . $fund->user->last_name }}</a></p>
-                        <p><strong>Current Holdings:</strong>
+
+                        <p><strong>Total Shares:</strong> {{ number_format($fund->totalShares(), 2) }}</p>
+                        <p><strong>Market Value (CAD):</strong> ${{ number_format($fund->marketValue(), 2) }}</p>
+                        <p><strong>Share Market Value (CAD):</strong> ${{ number_format($fund->shareMarketValue(), 2) }}</p>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card card-default">
+                    <div class="card-header">Current Holdings</div>
+                    <div class="card-body">
                         <table class="table">
                             <tr>
                                 <th>Currency</th>
@@ -38,13 +49,12 @@
                                 </tr>
                             @endforeach
                         </table>
-                        <p><strong>Total Shares:</strong> {{ number_format($fund->totalShares(), 2) }}</p>
-                        <p><strong>Market Value (CAD):</strong> ${{ number_format($fund->marketValue(), 2) }}</p>
-                        <p><strong>Share Market Value (CAD):</strong> ${{ number_format($fund->shareMarketValue(), 2) }}</p>
-
-
                     </div>
                 </div>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-12">
                 @if($fundsRemoval->count() > 0)
                     <br>
                     <div class="card card-default">
@@ -125,9 +135,7 @@
                     </div>
                 @endif
                 <br>
-            </div>
 
-            <div class="col-lg-6">
                 <div class="card card-default">
                     <div class="card-header">Transaction History</div>
                     <div class="card-body">
@@ -175,6 +183,7 @@
 
                         </table>
                     </div>
+                </div>
             </div>
         </div>
     </div>
