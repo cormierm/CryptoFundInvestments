@@ -3,16 +3,26 @@
 @section('content')
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-md-12">
+            <div class="col-md-6">
                 <div class="card card-default">
                     <div class="card-header">Fund Management</div>
 
                     <div class="card-body">
 
-                        <h2><small>Name:</small> {{ $fund->name }} <a href="/funds/{{ $fund->id }}/edit"><button class="btn btn-primary">Edit Fund Details</button></a></h2>
+                        <h2><small>Name:</small> {{ $fund->name }} <a href="/funds/{{ $fund->id }}/edit"><button class="btn btn-primary float-right">Edit Fund Details</button></a></h2>
                         <p><strong>Description:</strong> {{ $fund->description }}</p>
                         <p><strong>Risk:</strong> {{ $fund->risk->name }}</p>
-                        <p><strong>Current Holdings:</strong>
+
+                        <p><strong>Total Shares:</strong> {{ number_format($fund->totalShares(),2) }}</p>
+                        <p><strong>Current Market Value (CAD):</strong> ${{ number_format($fund->marketValue(), 2) }}</p>
+                        <p><strong>Share Market Value (CAD):</strong> ${{ number_format($fund->shareMarketValue(), 2) }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card card-default">
+                    <div class="card-header">Current Holdings</div>
+                    <div class="card-body">
                         <table class="table">
                             <tr>
                                 <th>Currency</th>
@@ -25,10 +35,17 @@
                                 </tr>
                             @endforeach
                         </table>
-                        <p><strong>Total Shares:</strong> {{ number_format($fund->totalShares(),2) }}</p>
-                        <p><strong>Current Market Value (CAD):</strong> ${{ number_format($fund->marketValue(), 2) }}</p>
-                        <p><strong>Share Market Value (CAD):</strong> ${{ number_format($fund->shareMarketValue(), 2) }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-md-12">
+                <br>
+                <div class="card card-default">
+                    <div class="card-header">Add New Transaction</div>
 
+                    <div class="card-body">
                         <form method="post" action="/transactions">
                             @csrf
                             <input type=hidden name="fund_id" id="fund_id" value="{{ $fund->id }}" />
