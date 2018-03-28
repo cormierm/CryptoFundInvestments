@@ -24,7 +24,7 @@ class Fund extends Model
     }
 
     public function availableCash() {
-        return $this->confirmInvestments()->sum('amount');
+        return $this->getTotalByCurrencyId(1);
     }
 
     public function totalShares() {

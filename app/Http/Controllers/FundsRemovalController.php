@@ -38,6 +38,10 @@ class FundsRemovalController extends Controller
         if($fundRemoval->fund->user->id = Auth::user()->getAuthIdentifier()) {
             $marketValue = $fundRemoval->marketValue();
 
+            if ($marketValue > $fundRemoval->fund->availableCash()) {
+                return redirect()->back()->with('errorMessage', 'Not enough CAD to payout request');
+            }
+
             Transaction::create([
                 'fund_id'             => $fundRemoval->fund->id,
                 'transaction_type_id' => 4,
