@@ -40,11 +40,24 @@ class User extends Authenticatable
     }
 
     public function isTrader() {
-        if ($this->roles->has(1))
+        if ($this->roles->where('name', 'Trader')->count())
         {
             return true;
         }
         return false;
+    }
+
+    public function isAdmin() {
+        if ($this->roles->where('name', 'Admin')->count())
+        {
+            return true;
+        }
+        return false;
+    }
+
+    public function fundsRemovalRequests($fund_id) {
+        $fundsRemoval = FundsRemoval::where('user_id', $this->attributes['id'])->where('fund_id', $fund_id)->get();
+        return $fundsRemoval;
     }
 
 }

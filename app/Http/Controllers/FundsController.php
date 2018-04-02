@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Currency;
+use App\FundsRemoval;
 use App\Investment;
 use App\TransactionType;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -70,13 +71,21 @@ class FundsController extends Controller
             $transactions = $fund->transactions()->orderByDesc('created_at')->get();
             $currencies = Currency::all();
             $transactionTypes = TransactionType::all();
+
+            $pendingFundRemovals = FundsRemoval::where('fund_id', $fund->id)->get();
+
             return view('funds.management',
-                compact('fund', 'unconfirmedInvestments', 'transactions', 'currencies', 'transactionTypes'));
+                compact('fund', 'unconfirmedInvestments', 'transactions', 'currencies', 'transactionTypes', 'pendingFundRemovals'));
         }
 
-        $investments = Investment::where('user_id', Auth::user()->getAuthIdentifier())->where('fund_id', $id)->get();
+        $transactions = $fund->transactions()->orderByDesc('created_at')->get();
 
-        return view('funds.show', compact('fund', 'user', 'investments'));
+        $fundsRemoval = $user->fundsRemovalRequests($fund->id);
+
+        $confirmedInvestments = Investment::where('user_id', Auth::user()->getAuthIdentifier())->where('fund_id', $id)->where('is_approved', true)->get();
+        $unconfirmedInvestments = Investment::where('user_id', Auth::user()->getAuthIdentifier())->where('fund_id', $id)->where('is_approved', false)->get();
+
+        return view('funds.show', compact('fund', 'user', 'confirmedInvestments', 'unconfirmedInvestments', 'transactions', 'fundsRemoval'));
     }
 
     public function edit($id)

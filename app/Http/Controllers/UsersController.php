@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\TraderRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\User;
@@ -20,6 +21,19 @@ class UsersController extends Controller
         $user = Auth::user();
 
         return view('users.profile', compact('user', 'currentUser'));
+    }
+
+    public function userProfile($id)
+    {
+        $user = User::findOrFail(Auth::user()->getAuthIdentifier());
+
+        if ($user->isAdmin()) {
+            $user = User::findOrFail($id);
+
+            return view('users.profile', compact('user'));
+        }
+
+        return redirect()->back()->with('errorMessage', 'You do not have permissions to view that page');
     }
 
     public function trader($id)
@@ -67,13 +81,6 @@ class UsersController extends Controller
         return redirect('/profile');
     }
 
-    public function apply_trader_role()
-    {
-        $user = Auth::user();
-        $user->roles()->sync([1,2]);
-        return redirect('/profile');
-    }
-
     public function remove_trader_role()
     {
         $user = Auth::user();
@@ -99,4 +106,23 @@ class UsersController extends Controller
         return redirect()->back()->with("successPassword","Password changed successfully!");
 
     }
+
+    public function requestTraderRole(Request $qwer) {
+        $user = User::find(Auth::user()->getAuthIdentifier());
+
+        if($user->isTrader()) {
+            return redirect()->back()->with("errorMessage", "You are already a Trader");
+        }
+
+        if (TraderRequest::where('user_id', $user->id)->count() == 0) {
+            TraderRequest::create(['user_id'=>$user->id]);
+            return redirect()->back()->with("successMessage", "Successfully submitted request for Trader role");
+        }
+        else {
+            return redirect()->back()->with("errorMessage", "There is a request for Trader role");
+        }
+
+        return redirect()->back()->with("errorMessage", "Error processing request for Trader role");
+    }
+
 }
