@@ -33,7 +33,6 @@
 
                 </div>
             </div>
-            <br>
             <div class="card card-default">
                 <div class="card-header">Coin Lookup</div>
 

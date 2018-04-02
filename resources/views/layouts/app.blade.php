@@ -67,7 +67,7 @@
             @include('layouts.sidebar')
         </div>
         @endif
-        <main class="py-4">
+        <main class="py-3">
             @if(session('infoMessage'))
                 <div class="container">
                     <div class="alert alert-info">

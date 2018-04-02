@@ -82,7 +82,6 @@
                     </div>
                 </div>
                 @if($unconfirmedInvestments->count() > 0)
-                    <br>
                     <div class="card card-default">
                         <div class="card-header">Unconfirmed Investments</div>
                         <div class="card-body">
@@ -114,7 +113,6 @@
                         </div>
                     </div>
                 @endif
-                <br>
                 <div class="card card-default">
                     <div class="card-header">Transaction History</div>
                     <div class="card-body">

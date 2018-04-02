@@ -39,7 +39,6 @@
                     </div>
                 </div>
                 @if($investments->count() > 0)
-                    <br>
                     <div class="card card-default">
                         <div class="card-header">Your Investments</div>
 
