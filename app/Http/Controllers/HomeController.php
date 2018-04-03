@@ -36,13 +36,11 @@ class HomeController extends Controller
             return view('trader_dashboard', compact('funds', 'coins'));
         }
 
-        $investments = Investment::where('user_id', Auth::user()->getAuthIdentifier())->get();
-
         $funds = array();
-        foreach(Investment::selectRaw('fund_id')->groupBy('fund_id')->get() as $fund) {
+        foreach(Investment::selectRaw('fund_id')->groupBy('fund_id')->where('user_id', Auth::user()->getAuthIdentifier())->get() as $fund) {
             $funds[] = Fund::find($fund->fund_id);
         }
 
-        return view('client_dashboard', compact('investments', 'funds', 'coins'));
+        return view('client_dashboard', compact('funds', 'coins'));
     }
 }

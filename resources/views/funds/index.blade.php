@@ -12,6 +12,7 @@
                         <tr>
                             <th>Name</th>
                             <th>Description</th>
+                            <th>Market Value (CAD)</th>
                             <th>Risk Level</th>
                             <th>Created by</th>
                         </tr>
@@ -19,12 +20,12 @@
                             <tr>
                                 <td><a href="/funds/{{ $fund->id }}">{{ $fund->name }}</a></td>
                                 <td>{{ $fund->description }}</td>
+                                <td>${{ number_format($fund->marketValue(), 2) }}</td>
                                 <td>{{ $fund->risk->name }}</td>
                                 <td><a href="/trader/{{ $fund->user->id }}">{{ $fund->user->first_name . " " . $fund->user->last_name }}</a></td>
                             </tr>
                         @endforeach
                     </table>
-                    <a href="/funds"><button class="btn btn-primary">All Funds</button></a>
                     @if ($user->isTrader())
                         <a href="/funds/create"><button class="btn btn-primary">Create Fund</button></a>
                     @endif

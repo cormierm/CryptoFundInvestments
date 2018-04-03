@@ -20,16 +20,19 @@ Auth::routes();
 Route::get('/dashboard', 'HomeController@dashboard');
 
 Route::get('/profile', 'UsersController@profile');
+Route::get('/user/{id}', 'UsersController@userProfile');
 Route::get('/trader/{id}', 'UsersController@trader');
 Route::get('/profile/edit', 'UsersController@edit');
 Route::post('/profile/edit', 'UsersController@update');
-Route::get('/profile/apply_trader_role', 'UsersController@apply_trader_role');
+Route::post('/profile/requestTraderRole', 'UsersController@requestTraderRole');
 Route::get('/profile/remove_trader_role', 'UsersController@remove_trader_role');
 Route::post('/profile/changePassword', 'UsersController@changePassword');
 
 Route::resource('/funds', 'FundsController');
 
 Route::get('/investments/create/{id}', 'InvestmentsController@create');
+Route::get('/investments/removal/{id}', 'InvestmentsController@removal');
+Route::post('/investments/removal', 'InvestmentsController@removalRequest');
 Route::post('/investments', 'InvestmentsController@store');
 Route::post('/investments/approve', 'InvestmentsController@approve');
 
@@ -37,6 +40,12 @@ Route::post('/transactions', 'TransactionsController@store');
 
 Route::get('/coinlookup', 'CoinLookupController@index');
 
+Route::post('/investments/remove/cancel', 'FundsRemovalController@cancel');
+Route::post('/investments/remove/approve', 'FundsRemovalController@approve');
+
+Route::get('/admin', 'AdminController@index');
+Route::post('/admin/approveTraderRequest', 'AdminController@approveTraderRequest');
+Route::get('/admin/cancelTraderRequest', 'AdminController@cancelTraderRequest');
 
 
 use App\Role;
@@ -46,19 +55,4 @@ Route::get('/test', function () {
     return $fund->userMarketValue();
 //    $coin = App\Currency::all()->where('symbol', 'CAD')->first;
 //    print($coin->latestCoinPrice->price_cad);
-});
-Route::get('/init', function () {
-    Role::create(['name'=>'Trader']);
-    Role::create(['name'=>'Client']);
-    Risk::create(['name'=>'Aggressive']);
-    Risk::create(['name'=>'Balanced']);
-    Risk::create(['name'=>'Conservative']);
-    \App\CurrencyType::create(['name'=>'Crypto']);
-    \App\CurrencyType::create(['name'=>'Fiat']);
-    \App\Currency::create(['name'=>'CAD','symbol'=>'CAD','currency_type_id'=>2,'coin_market_cap'=>null]);
-    \App\CoinPrice::create(['currency_id'=>'1','price_cad'=>1]);
-    \App\TransactionType::create(['name'=>'Buy']);
-    \App\TransactionType::create(['name'=>'Sell']);
-    \App\TransactionType::create(['name'=>'Investment']);
-    return "init done.";
 });

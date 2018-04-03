@@ -3,16 +3,25 @@
 @section('content')
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-md-12">
+            <div class="col-lg-6">
                 <div class="card card-default">
                     <div class="card-header">Fund Management</div>
-
                     <div class="card-body">
 
-                        <h2><small>Name:</small> {{ $fund->name }} <a href="/funds/{{ $fund->id }}/edit"><button class="btn btn-primary">Edit Fund Details</button></a></h2>
+                        <h2><small>Name:</small> {{ $fund->name }} <a href="/funds/{{ $fund->id }}/edit"><button class="btn btn-primary float-right">Edit Fund Details</button></a></h2>
                         <p><strong>Description:</strong> {{ $fund->description }}</p>
                         <p><strong>Risk:</strong> {{ $fund->risk->name }}</p>
-                        <p><strong>Current Holdings:</strong>
+
+                        <p><strong>Total Shares:</strong> {{ number_format($fund->totalShares(),2) }}</p>
+                        <p><strong>Current Market Value (CAD):</strong> ${{ number_format($fund->marketValue(), 2) }}</p>
+                        <p><strong>Share Market Value (CAD):</strong> ${{ number_format($fund->shareMarketValue(), 2) }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card card-default">
+                    <div class="card-header">Current Holdings</div>
+                    <div class="card-body">
                         <table class="table">
                             <tr>
                                 <th>Currency</th>
@@ -25,10 +34,17 @@
                                 </tr>
                             @endforeach
                         </table>
-                        <p><strong>Total Shares:</strong> {{ number_format($fund->totalShares(),2) }}</p>
-                        <p><strong>Current Market Value (CAD):</strong> ${{ number_format($fund->marketValue(), 2) }}</p>
-                        <p><strong>Share Market Value (CAD):</strong> ${{ number_format($fund->shareMarketValue(), 2) }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-md-12">
+                <br>
+                <div class="card card-default">
+                    <div class="card-header">Add New Transaction</div>
 
+                    <div class="card-body">
                         <form method="post" action="/transactions">
                             @csrf
                             <input type=hidden name="fund_id" id="fund_id" value="{{ $fund->id }}" />
@@ -113,6 +129,40 @@
                         </div>
                     </div>
                 @endif
+                @if($pendingFundRemovals->count() > 0)
+                    <br>
+                    <div class="card card-default">
+                        <div class="card-header">Pending Fund Removal Requests</div>
+
+                        <div class="card-body">
+                            <table class="table">
+                                <tr>
+                                    <th>Client</th>
+                                    <th>Shares Amount</th>
+                                    <th>Market Value(CAD)</th>
+                                    <th>Created on</th>
+                                    <th></th>
+                                </tr>
+                                @foreach ($pendingFundRemovals as $fr)
+                                    <tr>
+                                        <td>{{ $fr->user->email }}</td>
+                                        <td>${{ $fr->share_amount }}</td>
+                                        <td>${{ number_format($fr->marketValue(), 2) }}</td>
+                                        <td>{{ $fr->created_at }}</td>
+                                        <td>
+                                            <form method="post" action="/investments/remove/approve">
+                                                @csrf
+                                                <input type="hidden" name="removal_id" id="removal_id" value="{{ $fr->id }}"/>
+                                                <input type="submit" value="Approve" class="btn btn-danger"/>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </table>
+                        </div>
+                    </div>
+                @endif
+                <br>
                 <div class="card card-default">
                     <div class="card-header">Transaction History</div>
                     <div class="card-body">
@@ -124,7 +174,7 @@
                                 <th>Sell Currency</th>
                                 <th>Sell Amount</th>
                                 <th>Rate</th>
-                                <th>Submitted on</th>
+                                <th>Timestamp</th>
                             </tr>
 
                             @foreach($transactions as $transaction)
@@ -137,14 +187,23 @@
                                             {{  $transaction->buy_currency->name }}
                                         @endif
                                     </td>
-                                    <td>{{  $transaction->buy_amount }}</td>
+                                    <td>
+                                        @if($transaction->buy_amount != 0)
+                                            {{  $transaction->buy_amount }}</td>
+                                    @endif
                                     <td>
                                         @if($transaction->sell_currency)
                                             {{  $transaction->sell_currency->name }}
                                         @endif
                                     </td>
-                                    <td>{{  $transaction->sell_amount }}</td>
-                                    <td>{{ $transaction->rate }}</td>
+                                    <td>
+                                        @if($transaction->sell_amount != 0)
+                                            {{  $transaction->sell_amount }}</td>
+                                    @endif
+                                    <td>
+                                        @if($transaction->rate != 0)
+                                            {{ $transaction->rate }}</td>
+                                    @endif
                                     <td>{{  $transaction->created_at }}</td>
                                 </tr>
                             @endforeach

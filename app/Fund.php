@@ -24,7 +24,7 @@ class Fund extends Model
     }
 
     public function availableCash() {
-        return $this->confirmInvestments()->sum('amount');
+        return $this->getTotalByCurrencyId(1);
     }
 
     public function totalShares() {
@@ -91,6 +91,29 @@ class Fund extends Model
         $value = 0;
         foreach($investments as $investment) {
             $value += $investment->marketValue();
+        }
+        return $value;
+    }
+
+    public function userShares() {
+        $investments = $this->confirmInvestments()->where('user_id', Auth::user()->getAuthIdentifier())->get();
+        $value = 0;
+        foreach($investments as $investment) {
+            $value += $investment->shares;
+        }
+        return $value;
+    }
+
+    public function userAvailableShares() {
+        $investments = $this->confirmInvestments()->where('user_id', Auth::user()->getAuthIdentifier())->get();
+        $value = 0;
+        foreach($investments as $investment) {
+            $value += $investment->shares;
+        }
+
+        $fundsRemoval = FundsRemoval::where('user_id', Auth::user()->getAuthIdentifier())->where('fund_id', $this->attributes['id'])->get();
+        foreach($fundsRemoval as $fr) {
+            $value -= $fr->share_amount;
         }
         return $value;
     }

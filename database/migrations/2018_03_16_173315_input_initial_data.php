@@ -20,6 +20,9 @@ class InputInitialData extends Migration
         DB::table('roles')->insert(
             ['name' => 'Client']
         );
+        DB::table('roles')->insert(
+            ['name' => 'Admin']
+        );
 
         //Risks
         DB::table('risks')->insert(
@@ -45,6 +48,13 @@ class InputInitialData extends Migration
             ['name'=>'CAD','symbol'=>'CAD','currency_type_id'=>2,'coin_market_cap_id'=>null]
         );
 
+        DB::table('coin_prices')->insert(['currency_id'=>'1','price_cad'=>1]);
+
+        // Transaction Types
+        DB::table('transaction_types')->insert(['name'=>'Buy']);
+        DB::table('transaction_types')->insert(['name'=>'Sell']);
+        DB::table('transaction_types')->insert(['name'=>'Investment']);
+        DB::table('transaction_types')->insert(['name'=>'Investment Withdraw']);
     }
 
     /**

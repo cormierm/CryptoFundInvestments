@@ -4,9 +4,9 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Investment extends Model
+class FundsRemoval extends Model
 {
-    protected $fillable = ['user_id', 'fund_id', 'amount', 'shares', 'is_approved'];
+    protected $fillable = ['user_id', 'fund_id', 'share_amount'];
 
     public function user() {
         return $this->hasOne('App\User', 'id', 'user_id');
@@ -17,6 +17,6 @@ class Investment extends Model
     }
 
     public function marketValue() {
-        return $this->attributes['shares'] * $this->fund->shareMarketValue();
+        return $this->fund->shareMarketValue() * $this->attributes['share_amount'];
     }
 }

@@ -2,6 +2,9 @@
     by: Lucas Kaastra
     Modified:
 */
+html * {
+    font-family: Helvetica, Arial, Verdana, SansSerif;
+}
 
 .dashboardsidebar {   
     border: 1px solid  rgb(59, 59, 59);
