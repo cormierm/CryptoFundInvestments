@@ -41,38 +41,6 @@
                     </div>
                 </div>
             @endif
-            @if($investments->count() > 0)
-                <div class="card card-default">
-                    <div class="card-header">Your Investment History</div>
-
-                    <div class="card-body">
-                        <table class="table">
-                            <tr>
-                                <th>Fund</th>
-                                <th>Investment (CAD)</th>
-                                <th>Shares</th>
-                                <th>Market Value (CAD)</th>
-                                <th>Approved</th>
-                                <th>Created on</th>
-                            </tr>
-                            @foreach ($investments as $investment)
-                                <tr>
-                                    <td><a href="/funds/{{ $investment->fund->id }}">{{ $investment->fund->name }}</a></td>
-                                    <td>${{ $investment->amount }}</td>
-                                    <td>{{ number_format($investment->shares, 2) }}</td>
-                                    <td>${{ number_format($investment->marketValue(), 2) }}</td>
-                                    <td>
-                                        @if($investment->is_approved) Yes
-                                        @else No
-                                        @endif
-                                    </td>
-                                    <td>{{ $investment->created_at }}</td>
-                                </tr>
-                            @endforeach
-                        </table>
-                    </div>
-                </div>
-            @endif
             <div class="card card-default">
                 <div class="card-header">Coin Lookup</div>
 
