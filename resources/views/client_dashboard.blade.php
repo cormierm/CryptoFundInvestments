@@ -20,7 +20,7 @@
                 </div>
             </div>
             @if(count($funds) > 0)
-                <br>
+                
                 <div class="card card-default">
                     <div class="card-header">Your Funds</div>
                     <div class="card-body">
@@ -41,8 +41,6 @@
                     </div>
                 </div>
             @endif
-
-            <br>
             <div class="card card-default">
                 <div class="card-header">Coin Lookup</div>
 

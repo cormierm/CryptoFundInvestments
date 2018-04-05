@@ -6,51 +6,64 @@ html * {
     font-family: Helvetica, Arial, Verdana, SansSerif;
 }
 
-.dashboardsidebar {
-    border-radius: 4px;
+.dashboardsidebar {   
     border: 1px solid  rgb(59, 59, 59);
+    border-top: none;
     height: 100%; 
     width: 180px; 
     position: fixed;  
     float: left;
-    background: #1a6364; 
+    background: #88bbd6; 
     padding-top: 20px;
 }
 
 /* The navigation menu links */
 .dashboardsidebar a {
     padding: 6px 8px 6px 16px;
-    text-decoration: none;
     font-size: 25px;
-    color: rgb(0, 0, 0);
+    color: #e9e9e9;
+    text-decoration: none;
     display: block;
 }
 
 /* When you mouse over the navigation links, change their color */
 .dashboardsidebar a:hover {
-    color: #DDF1Ef;
+    color: rgb(28, 33, 36);
 }
 
 .container {
-    float: right;
+    float: right; 
     width: calc(100% - 180px);
     max-width: none;
 }
 
 .card-header {
-    background: #259596;
+    background: #88bbd6;
 }
 
 .card-body {
-    background: #DDF1Ef;
+    background: #e9e9e9 ;
 }
 
 body {
-    background: rgb(191, 207, 206);
+    background: #dbdbdb;
+    padding-top: 55px
+}
+.card-default{
+    margin-bottom: 1em;
 }
 
 .navbar {
-    background: rgb(174, 218, 213);
+    background: #97bfd4;
     border-radius: 1px;
     border: .5px solid  rgb(116, 112, 112);
+    position: fixed; 
+    top: 0;
+    width: 100%; 
+    z-index: 1000;
 }
+.dropdown-menu{
+    background: #dbdbdb;
+    z-index: 9999;
+}
+
