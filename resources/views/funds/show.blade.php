@@ -20,6 +20,9 @@
                     <div class="card-body">
                         <h2>
                             <small>Name:</small> {{ $fund->name }}
+                            @if($fund->is_closed)
+                                <span class="badge badge-danger">Closed</span>
+                            @endif
                         </h2>
                         <br>
                         <p><strong>Description:</strong> {{ $fund->description }}</p>

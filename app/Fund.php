@@ -78,7 +78,7 @@ class Fund extends Model
 
         $bals = array();
         foreach ($balances as $key => $balance) {
-            if($key != '') {
+            if($key != '' && $balance > 0) {
                 $bals[Currency::find($key)->symbol] = $balance;
             }
         }

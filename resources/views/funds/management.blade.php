@@ -8,7 +8,12 @@
                     <div class="card-header">Fund Management</div>
                     <div class="card-body">
 
-                        <h2><small>Name:</small> {{ $fund->name }} <a href="/funds/{{ $fund->id }}/edit"><button class="btn btn-primary float-right">Edit Fund Details</button></a></h2>
+                        <h2>
+                            <small>Name:</small> {{ $fund->name }} <a href="/funds/{{ $fund->id }}/edit"><button class="btn btn-primary float-right">Edit Fund</button></a>
+                            @if($fund->is_closed)
+                                <span class="badge badge-danger">Closed</span>
+                            @endif
+                        </h2>
                         <p><strong>Description:</strong> {{ $fund->description }}</p>
                         <p><strong>Risk:</strong> {{ $fund->risk->name }}</p>
 
