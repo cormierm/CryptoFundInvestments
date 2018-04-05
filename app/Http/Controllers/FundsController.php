@@ -21,12 +21,20 @@ class FundsController extends Controller
         $this->middleware('auth');
     }
 
-    public function index()
+    public function index(Request $request)
     {
         $user = Auth::user();
-        $funds = Fund::all();
 
-        return view('funds.index', compact('funds', 'user'));
+        if ($request->query('showClosed') == 'true') {
+            $funds = Fund::all();
+            $showClosed = true;
+        }
+        else {
+            $funds = Fund::all()->where('is_closed', false);
+            $showClosed = false;
+        }
+
+        return view('funds.index', compact('funds', 'user', 'showClosed'));
     }
 
     public function create()

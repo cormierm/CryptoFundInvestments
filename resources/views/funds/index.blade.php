@@ -5,7 +5,14 @@
         <div class="row justify-content-center">
             <div class="col-md-12">
                 <div class="card card-default">
-                    <div class="card-header">All Funds</div>
+                    <div class="card-header">
+                        All Funds
+                        @if($showClosed)
+                            <a href="/funds" class="btn btn-info float-right">Hide Closed Funds</a>
+                        @else
+                            <a href="/funds?showClosed=true" class="btn btn-info float-right">Show Closed Funds</a>
+                        @endif
+                    </div>
 
                     <div class="card-body">
                     <table class="table">
