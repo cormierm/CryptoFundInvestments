@@ -31,6 +31,10 @@ class Fund extends Model
         return $this->confirmInvestments()->sum('shares');
     }
 
+    public function totalSharesByTimestamp($ts) {
+        return $this->confirmInvestments()->where('created_at', '<', $ts)->sum('shares');
+    }
+
     public function transactions() {
         return $this->hasMany('App\Transaction', 'fund_id', 'id');
     }
@@ -68,7 +72,6 @@ class Fund extends Model
             else {
                 $value += $balance;
             }
-
         }
 
         return $value;
@@ -77,6 +80,14 @@ class Fund extends Model
     public function shareMarketValue() {
         if($this->totalShares() != 0) {
             return $this->marketValue() / $this->totalShares();
+        }
+
+        return 0;
+    }
+
+    public function shareMarketValueByTimestamp($ts) {
+        if($this->totalSharesByTimestamp($ts) != 0) {
+            return $this->marketValueByTimestamp($ts) / $this->totalSharesByTimestamp($ts);
         }
 
         return 0;

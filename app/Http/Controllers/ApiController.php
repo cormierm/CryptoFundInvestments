@@ -20,8 +20,7 @@ class ApiController extends Controller
         $data = array();
 
         foreach($timestampList as $timestamp) {
-            $data[$timestamp->timestamp] = $fund->marketValueByTimestamp($timestamp);
-
+            $data[$timestamp->timestamp] = $fund->shareMarketValueByTimestamp($timestamp);
         }
 
         return $data;
