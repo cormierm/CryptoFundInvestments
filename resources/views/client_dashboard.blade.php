@@ -17,10 +17,40 @@
                     <h1>Welcome back {{ Auth::user()->first_name }}!</h1>
                     <h2>Client Dashboard</h2>
 
+                    <div>
+                        <canvas style="z-index: 9999" id="myChart"></canvas>
+                        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.js"></script>
+                        <script>
+                            var context = document.getElementById('myChart').getContext('2d');
+                            var chart = new Chart(context, {
+                                // The type of chart we want to create
+                                type: 'line',
+
+                                // The data for our dataset
+                                data: {
+                                    labels: ["January", "February", "March", "April", "May", "June", "July"],
+                                    datasets: [{
+                                        label: "My First dataset",
+                                        backgroundColor: 'rgb(255, 99, 132)',
+                                        borderColor: 'rgb(255, 99, 132)',
+                                        data: [0, 10, 5, 2, 20, 30, 45],
+                                    }]
+                                },
+
+                                // Configuration options go here
+                                options: {}
+                            });
+
+                            // var DOMContentLoaded_event = document.createEvent("Event");
+                            // DOMContentLoaded_event.initEvent("DOMContentLoaded", true, true);
+                            // window.document.dispatchEvent(DOMContentLoaded_event);
+
+                        </script>
+                    </div>
                 </div>
             </div>
             @if(count($funds) > 0)
-                
+
                 <div class="card card-default">
                     <div class="card-header">Your Funds</div>
                     <div class="card-body">
