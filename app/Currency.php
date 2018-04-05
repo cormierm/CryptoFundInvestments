@@ -20,4 +20,10 @@ class Currency extends Model
         return $this->hasOne('App\CoinPrice', 'currency_id', 'id')->latest();
     }
 
+    public function coinPriceByTimestamp($ts){
+        return $this->hasOne('App\CoinPrice', 'currency_id', 'id')
+            ->where('created_at', '<', $ts)
+            ->orderByDesc('created_at')
+            ->first();
+    }
 }

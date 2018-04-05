@@ -35,6 +35,10 @@ class Fund extends Model
         return $this->hasMany('App\Transaction', 'fund_id', 'id');
     }
 
+    public function transactionsByTimestamp($ts) {
+        return $this->hasMany('App\Transaction', 'fund_id', 'id')->where('created_at', '<',  $ts)->get();
+    }
+
     public function getTotalByCurrencyId($currencyId) {
         $sell_sum = $this->transactions()->where('sell_currency_id', $currencyId)->sum('sell_amount');
         $buy_sum = $this->transactions()->where('buy_currency_id', $currencyId)->sum('buy_amount');
@@ -52,6 +56,24 @@ class Fund extends Model
         return $value;
     }
 
+    public function marketValueByTimestamp($ts) {
+        $value = 0;
+
+        foreach ($this->balancesByTimestamp($ts) as $symbol => $balance) {
+            if ($symbol != 'CAD') {
+                $currency = Currency::where('symbol', $symbol)->first();
+
+                $value += $currency->coinPriceByTimestamp($ts)->price_cad * $balance;
+            }
+            else {
+                $value += $balance;
+            }
+
+        }
+
+        return $value;
+    }
+
     public function shareMarketValue() {
         if($this->totalShares() != 0) {
             return $this->marketValue() / $this->totalShares();
@@ -63,6 +85,32 @@ class Fund extends Model
     public function allBalances() {
         $balances = array();
         foreach ($this->transactions()->get() as $transaction) {
+
+            if(!isset($balances[$transaction->sell_currency_id])) {
+                $balances[$transaction->sell_currency] = 0;
+            }
+
+            if(!isset($balances[$transaction->buy_currency_id])) {
+                $balances[$transaction->buy_currency_id] = 0;
+            }
+
+            $balances[$transaction->sell_currency_id] -= $transaction->sell_amount;
+            $balances[$transaction->buy_currency_id] += $transaction->buy_amount;
+        }
+
+        $bals = array();
+        foreach ($balances as $key => $balance) {
+            if($key != '' && $balance > 0) {
+                $bals[Currency::find($key)->symbol] = $balance;
+            }
+        }
+
+        return $bals;
+    }
+
+    public function balancesByTimestamp($ts) {
+        $balances = array();
+        foreach ($this->transactionsByTimestamp($ts) as $transaction) {
 
             if(!isset($balances[$transaction->sell_currency_id])) {
                 $balances[$transaction->sell_currency] = 0;
