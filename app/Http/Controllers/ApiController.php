@@ -6,12 +6,20 @@ use App\CoinPrice;
 use App\Currency;
 use App\Fund;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class ApiController extends Controller
 {
     public function fundMarketSharePriceHistory($id, $days) {
-        $fund = Fund::findOrFail($id);
+        try {
+            $fund = Fund::findOrFail($id);
+        }
+        catch (ModelNotFoundException $ex) {
+            return response()->json(['message' => 'Invalid fund id'],
+                Response::HTTP_BAD_REQUEST);
+        }
 
         $ts = Carbon::now()->subDays($days);
 
@@ -23,8 +31,7 @@ class ApiController extends Controller
             $data[$timestamp->timestamp] = $fund->shareMarketValueByTimestamp($timestamp);
         }
 
-        return $data;
-
+        return response()->json($data,Response::HTTP_OK);
     }
 
     private function getTimestamps($ts) {
