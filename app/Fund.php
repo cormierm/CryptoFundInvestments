@@ -64,9 +64,9 @@ class Fund extends Model
     public function marketValueByTimestamp($ts) {
         $value = 0;
 
-        foreach ($this->balancesByTimestamp($ts) as $symbol => $balance) {
-            if ($symbol != 'CAD') {
-                $currency = Currency::where('symbol', $symbol)->first();
+        foreach ($this->balancesByTimestamp($ts) as $coin_id => $balance) {
+            if ($coin_id != 1) {
+                $currency = Currency::find($coin_id);
 
                 $value += $currency->coinPriceByTimestamp($ts)->price_cad * $balance;
             }
@@ -126,7 +126,7 @@ class Fund extends Model
         foreach ($this->transactionsByTimestamp($ts) as $transaction) {
 
             if(!isset($balances[$transaction->sell_currency_id])) {
-                $balances[$transaction->sell_currency] = 0;
+                $balances[$transaction->sell_currency_id] = 0;
             }
 
             if(!isset($balances[$transaction->buy_currency_id])) {
@@ -137,14 +137,18 @@ class Fund extends Model
             $balances[$transaction->buy_currency_id] += $transaction->buy_amount;
         }
 
-        $bals = array();
-        foreach ($balances as $key => $balance) {
-            if($key != '' && $balance > 0) {
-                $bals[Currency::find($key)->symbol] = $balance;
-            }
-        }
+        unset($balances['']);
 
-        return $bals;
+        return $balances;
+
+//        $bals = array();
+//        foreach ($balances as $key => $balance) {
+//            if($key != '' && $balance > 0) {
+//                $bals[Currency::find($key)->symbol] = $balance;
+//            }
+//        }
+//
+//        return $bals;
     }
 
     public function userMarketValue() {
