@@ -1,5 +1,6 @@
 <?php
 
+use App\Fund;
 use Illuminate\Http\Request;
 
 /*
@@ -18,5 +19,3 @@ Route::get('/funds/marketSharePriceHistory/{id}/{days}', 'ApiController@fundMark
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
-
-
