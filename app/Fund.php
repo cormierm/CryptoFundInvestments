@@ -40,7 +40,8 @@ class Fund extends Model
     }
 
     public function transactionsByTimestamp($ts) {
-        return $this->hasMany('App\Transaction', 'fund_id', 'id')->where('created_at', '<',  $ts)->get();
+        return $this->hasMany('App\Transaction', 'fund_id', 'id')
+            ->where('created_at', '<',  $ts)->get();
     }
 
     public function getTotalByCurrencyId($currencyId) {
@@ -86,8 +87,9 @@ class Fund extends Model
     }
 
     public function shareMarketValueByTimestamp($ts) {
-        if($this->totalSharesByTimestamp($ts) != 0) {
-            return $this->marketValueByTimestamp($ts) / $this->totalSharesByTimestamp($ts);
+        $totalShares = $this->totalSharesByTimestamp($ts);
+        if($totalShares != 0) {
+            return $this->marketValueByTimestamp($ts) / $totalShares;
         }
 
         return 0;
