@@ -56,7 +56,7 @@ body {
 .navbar {
     background: #97bfd4;
     border-radius: 1px;
-    border: .5px solid  rgb(116, 112, 112);
+    border: .5px solid rgb(116, 112, 112);
     position: fixed; 
     top: 0;
     width: 100%; 
@@ -66,4 +66,9 @@ body {
     background: #dbdbdb;
     z-index: 9999;
 }
+#canvasDiv{
+    background: #e9e9e9;
+    border-bottom: .5px solid #C6C6C6;
+}
+
 
