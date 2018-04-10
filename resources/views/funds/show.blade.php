@@ -30,11 +30,11 @@
                                             var ctx = document.getElementById('fundChart').getContext('2d');
                                             var timeStamp = [];
                                             var sharePrice = [];
-                                            var data = Json.parse(this.response);
+                                            var data = JSON.parse(this.response);
 
                                             for(var key in data) {
-                                                timeStamp.add(new Date(key*1000).getHours());
-                                                sharePrice.add(data[key]);
+                                                timeStamp.push(new Date(key*1000).getHours());
+                                                sharePrice.push(data[key]);
                                             }
 
                                             var chart = new Chart(ctx, {
