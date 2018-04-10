@@ -57,7 +57,7 @@ def db_insert_market_data(coins, market_data):
     info_msg = 'Inserting market data into database'
     logger.info(info_msg)
 
-    timestamp = datetime.datetime.now()
+    timestamp = datetime.datetime.utcnow()
 
     sql = ("INSERT INTO coin_prices (`currency_id`, `rank`, `price_btc`, `price_usd`, `price_cad`, `market_cap_usd`, "
            "`market_cap_cad`, `volume_usd`, `volume_cad`, `available_supply`, `total_supply`, `max_supply`, "
@@ -104,7 +104,7 @@ def insert_coin(coin):
     info_msg = 'Inserting coin into database: {}'.format(coin['id'])
     logger.info(info_msg)
 
-    timestamp = datetime.datetime.now()
+    timestamp = datetime.datetime.utcnow()
 
     sql = ("INSERT INTO currencies (`name`, `symbol`, `currency_type_id`, `coin_market_cap_id`, `created_at`) "
            "VALUES (%s, %s, %s, %s, %s)")
