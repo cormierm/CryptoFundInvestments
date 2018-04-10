@@ -39,7 +39,7 @@ class ApiController extends Controller
         $counter = $interval - (count($timestampList) % $interval) + 1;
 
         foreach($timestampList as $timestamp) {
-            if ($counter == $interval) {
+            if ($counter >= $interval) {
                 $data[$timestamp->timestamp] = $fund->shareMarketValueByTimestamp($timestamp);
                 $counter = 1;
             }
