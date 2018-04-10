@@ -27,11 +27,13 @@ class ApiController extends Controller
 
         $data = array();
 
+        $interval = 0;
+
         if ($days == 1) {
             $interval = 12;
         }
         else {
-            $interval = 12 * 12;
+            $interval = 12 * 24;
         }
 
         $counter = $interval - (count($timestampList) % $interval) + 1;
