@@ -7,17 +7,33 @@
                 <div class="card card-default">
                     <div class="card-header">Fund Management</div>
                     <div class="card-body">
+                        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+
+
                         <div id="canvasDiv">
-                            <p>Loading Chart...</p>
-                            <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
-                            <canvas id="fundChart"></canvas>
+                            <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
+                                <li class="nav-item" class="active"><a class="nav-link active" href="#dayChart" data-toggle="tab">24h</a></li>
+                                <li class="nav-item"><a class="nav-link" href="#weekChart" data-toggle="tab">7day</a></li>
+                            </ul>
+
+                            <div class="tab-content">
+                                <div class="tab-pane active" id="dayChart">
+                                    <p>Loading Chart...</p>
+                                    <canvas id="fundDayChart"></canvas>
+                                </div>
+                                <div class="tab-pane" id="weekChart">
+                                    <p>Loading Chart...</p>
+                                    <canvas id="fundWeekChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
                             <script>
                                 window.onload = function() {
-                                    var xmlhttp = new XMLHttpRequest();
-                                    xmlhttp.onreadystatechange = function() {
+                                    var dayCall = new XMLHttpRequest();
+                                    dayCall.onreadystatechange = function() {
                                         if (this.readyState == 4 && this.status == 200) {
-                                            document.getElementById('canvasDiv').innerHTML = "<canvas id=\"fundChart\"></canvas>";
-                                            var ctx = document.getElementById('fundChart').getContext('2d');
+                                            document.getElementById('dayChart').innerHTML = "<canvas id=\"fundDayChart\"></canvas>";
+                                            var dayContext = document.getElementById('fundDayChart').getContext('2d');
                                             var timeStamp = [];
                                             var sharePrice = [];
                                             var data = JSON.parse(this.response);
@@ -28,7 +44,7 @@
                                                 sharePrice.push(data[key]);
                                             }
 
-                                            var chart = new Chart(ctx, {
+                                            var chart = new Chart(dayContext, {
                                                 type: 'line',
 
                                                 data: {
@@ -42,17 +58,59 @@
                                                 },
 
                                                 options: {
-
+                                                    title: {
+                                                        display: true,
+                                                        text: 'Share Price - 24 Hour'
+                                                    }
                                                 }
                                             });
                                         }
                                     };
-                                    xmlhttp.open("GET", "/api/funds/marketSharePriceHistory/{{ $fund->id }}/1");
-                                    xmlhttp.send();
+                                    dayCall.open("GET", "/api/funds/marketSharePriceHistory/{{ $fund->id }}/1");
+                                    dayCall.send();
+
+                                    var weekCall = new XMLHttpRequest();
+                                    weekCall.onreadystatechange = function() {
+                                        if (this.readyState == 4 && this.status == 200) {
+                                            document.getElementById('weekChart').innerHTML = "<canvas id=\"fundWeekChart\"></canvas>";
+                                            var weekContext = document.getElementById('fundWeekChart').getContext('2d');
+                                            var timeStamp = [];
+                                            var sharePrice = [];
+                                            var data = JSON.parse(this.response);
+
+                                            for(var key in data) {
+                                                var date = new Date(key*1000);
+                                                timeStamp.push(date.getHours() + ':' + (date.getMinutes()<10?'0':'') + date.getMinutes());
+                                                sharePrice.push(data[key]);
+                                            }
+
+                                            var chart = new Chart(weekContext, {
+                                                type: 'line',
+
+                                                data: {
+                                                    labels: timeStamp,
+                                                    datasets: [{
+                                                        label: "Price per Share",
+                                                        backgroundColor: '#7AA8C0',
+                                                        borderColor: '#427995',
+                                                        data: sharePrice,
+                                                    }]
+                                                },
+
+                                                options: {
+                                                    title: {
+                                                        display: true,
+                                                        text: 'Share Price - 7 Day'
+                                                    }
+                                                }
+                                            });
+                                        }
+                                    };
+                                    weekCall.open("GET", "/api/funds/marketSharePriceHistory/{{ $fund->id }}/7");
+                                    weekCall.send();
 
                                 };
                             </script>
-                        </div>
 
                         <h2>
                             <small>Name:</small> {{ $fund->name }}
