@@ -8,12 +8,14 @@
                     <div class="card-header">
                         <h3>
                             Fund Details
-                            <a href="/investments/create/{{ $fund->id }}">
-                                <button class="btn btn-info float-right">Invest In Fund</button>
-                            </a>
-                            <a href="/investments/removal/{{ $fund->id }}">
-                                <button class="btn btn-danger float-right">Request Investment Removal</button>
-                            </a>
+                            @if(!$fund->is_closed)
+                                <a href="/investments/create/{{ $fund->id }}">
+                                    <button class="btn btn-info float-right">Invest In Fund</button>
+                                </a>
+                                <a href="/investments/removal/{{ $fund->id }}">
+                                    <button class="btn btn-danger float-right">Request Investment Removal</button>
+                                </a>
+                            @endif
                         </h3>
                     </div>
                     <div class="card-body">
