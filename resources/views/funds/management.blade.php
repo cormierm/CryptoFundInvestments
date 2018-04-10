@@ -81,7 +81,7 @@
                                             for(var key in data) {
                                                 var localMonth = ["Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Agu", "Sept", "Oct", "Nov", "Dec"];
                                                 var date = new Date(key*1000);
-                                                timeStamp.push(date.getHours() + ':' + (localMonth[date.getMonth()] + ' ' + date.getDate());
+                                                timeStamp.push(date.getHours() + ':' + (localMonth[date.getMonth()] + ' ' + date.getDate()));
                                                 sharePrice.push(data[key]);
                                             }
 
