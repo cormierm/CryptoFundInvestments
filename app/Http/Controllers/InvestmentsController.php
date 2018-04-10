@@ -125,6 +125,10 @@ class InvestmentsController extends Controller
             return redirect()->back()->with('errorMessage', 'There was an error retrieving fund');
         }
 
+        if ($fund->is_closed) {
+            return redirect()->back()->with('errorMessage', 'Error processing due to fund being closed.');
+        }
+
         $user = Auth::user();
 
         $availableFunds = $fund->userMarketValue();
@@ -143,7 +147,16 @@ class InvestmentsController extends Controller
             'amount' => 'required'
         ]);
 
-        $fund = Fund::findOrFail($request->fund_id);
+        try {
+            $fund = Fund::findOrFail($request->fund_id);
+        }
+        catch (ModelNotFoundException $ex) {
+            return redirect()->back()->with('errorMessage', 'There was an error retrieving fund');
+        }
+
+        if ($fund->is_closed) {
+            return redirect()->back()->with('errorMessage', 'Error processing due to fund being closed.');
+        }
 
         if ($fund->userAvailableShares() < $request->amount) {
             return redirect()->back()->with('errorMessage', 'You do not have any shares for that request');

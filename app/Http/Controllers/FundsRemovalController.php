@@ -19,6 +19,10 @@ class FundsRemovalController extends Controller
             return redirect()->back()->with('errorMessage', 'Error cancelling Fund Removal Request');
         }
 
+        if ($fundRemoval->fund->is_closed) {
+            return redirect()->back()->with('errorMessage', 'Error processing due to fund being closed.');
+        }
+
         if($fundRemoval->user_id = Auth::user()->getAuthIdentifier()) {
             $fundRemoval->delete();
             return redirect()->back()->with('successMessage', 'Successfully cancelled Fund Remove Request');
@@ -33,6 +37,10 @@ class FundsRemovalController extends Controller
         }
         catch (ModelNotFoundException $ex) {
             return redirect()->back()->with('errorMessage', 'Error approving Fund Removal Request');
+        }
+
+        if ($fundRemoval->fund->is_closed) {
+            return redirect()->back()->with('errorMessage', 'Error processing due to fund being closed.');
         }
 
         if($fundRemoval->fund->user->id = Auth::user()->getAuthIdentifier()) {
