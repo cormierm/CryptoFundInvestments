@@ -30,18 +30,17 @@
                                             var ctx = document.getElementById('fundChart').getContext('2d');
                                             var timeStamp = [];
                                             var sharePrice = [];
-                                            var data = Json.parse(this.response);
+                                            var data = JSON.parse(this.response);
 
                                             for(var key in data) {
-                                                timeStamp.add(new Date(key*1000).getHours());
-                                                sharePrice.add(data[key]);
+                                                var date = new Date(key*1000);
+                                                timeStamp.push(date.getHours() + ':' + (date.getMinutes()<10?'0':'') + date.getMinutes());
+                                                sharePrice.push(data[key]);
                                             }
 
                                             var chart = new Chart(ctx, {
-                                                // The type of chart we want to create
                                                 type: 'line',
 
-                                                // The data for our dataset
                                                 data: {
                                                     labels: timeStamp,
                                                     datasets: [{
@@ -52,14 +51,13 @@
                                                     }]
                                                 },
 
-                                                // Configuration options go here
                                                 options: {
 
                                                 }
                                             });
                                         }
                                     };
-                                    xmlhttp.open("GET", "http://capstone.mattcormier.com/api/funds/marketSharePriceHistory/{{ $fund->id }}/1");
+                                    xmlhttp.open("GET", "/api/funds/marketSharePriceHistory/{{ $fund->id }}/1");
                                     xmlhttp.send();
 
                                 };
