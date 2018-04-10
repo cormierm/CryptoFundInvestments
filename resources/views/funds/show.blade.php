@@ -16,8 +16,55 @@
                             </a>
                         </h3>
                     </div>
-
                     <div class="card-body">
+                        <div id="canvasDiv">
+                            <p>Loading Chart...</p>
+                            <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+                            <canvas id="fundChart"></canvas>
+                            <script>
+                                window.onload = function() {
+                                    var xmlhttp = new XMLHttpRequest();
+                                    xmlhttp.onreadystatechange = function() {
+                                        if (this.readyState == 4 && this.status == 200) {
+                                            document.getElementById('canvasDiv').innerHTML = "<canvas id=\"fundChart\"></canvas>";
+                                            var ctx = document.getElementById('fundChart').getContext('2d');
+                                            var timeStamp = [];
+                                            var sharePrice = [];
+                                            var data = Json.parse(this.response);
+
+                                            for(var key in data) {
+                                                timeStamp.add(new Date(key*1000).getHours());
+                                                sharePrice.add(data[key]);
+                                            }
+
+                                            var chart = new Chart(ctx, {
+                                                // The type of chart we want to create
+                                                type: 'line',
+
+                                                // The data for our dataset
+                                                data: {
+                                                    labels: timeStamp,
+                                                    datasets: [{
+                                                        label: "Price per Share",
+                                                        backgroundColor: '#7AA8C0',
+                                                        borderColor: '#427995',
+                                                        data: sharePrice,
+                                                    }]
+                                                },
+
+                                                // Configuration options go here
+                                                options: {
+
+                                                }
+                                            });
+                                        }
+                                    };
+                                    xmlhttp.open("GET", "http://capstone.mattcormier.com/api/funds/marketSharePriceHistory/{{ $fund->id }}/1");
+                                    xmlhttp.send();
+
+                                };
+                            </script>
+                        </div>
                         <h2>
                             <small>Name:</small> {{ $fund->name }}
                             @if($fund->is_closed)
