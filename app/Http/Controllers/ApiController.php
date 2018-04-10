@@ -28,7 +28,7 @@ class ApiController extends Controller
         $data = array();
 
         if ($days == 1) {
-            $interval = 6;
+            $interval = 12;
         }
         else {
             $interval = 12;
