@@ -6,12 +6,18 @@
             <div class="col-md-12">
 
                 <div class="card card-default">
-                    <div class="card-header">Update Fund</div>
+                    <div class="card-header">
+                        <span class="float-left">Update Fund</span>
+                        <form method="post" action="/funds/{{ $fund->id }}" class="float-right">
+                            @csrf
+                            <input type="hidden" name="_method" value="delete" />
+                            <input type="submit" value="Close Fund" class="btn btn-danger">
+                        </form>
+                    </div>
 
                     <div class="card-body">
                         <form method="post" action="/funds/{{ $fund->id }}">
                             @csrf
-
                             <input type="hidden" name="_method" value="put">
                             <input type="hidden" name="user_id" id="user_id" value="{{ $fund->user_id }}">
                             <div class="form-group row">
@@ -63,7 +69,7 @@
                             <div class="form-group row mb-0">
                                 <div class="col-md-6 offset-md-4">
                                     <button type="submit" class="btn btn-primary">
-                                        Update Fund
+                                        Update Fund Details
                                     </button>
                                 </div>
                             </div>
