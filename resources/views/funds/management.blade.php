@@ -23,15 +23,14 @@
                                             var data = JSON.parse(this.response);
 
                                             for(var key in data) {
-                                                timeStamp.push(new Date(key*1000).getHours());
+                                                var date = new Date(key*1000);
+                                                timeStamp.push(date.getHours() + ':' + (date.getMinutes()<10?'0':'') + date.getMinutes());
                                                 sharePrice.push(data[key]);
                                             }
 
                                             var chart = new Chart(ctx, {
-                                                // The type of chart we want to create
                                                 type: 'line',
 
-                                                // The data for our dataset
                                                 data: {
                                                     labels: timeStamp,
                                                     datasets: [{
@@ -42,14 +41,13 @@
                                                     }]
                                                 },
 
-                                                // Configuration options go here
                                                 options: {
 
                                                 }
                                             });
                                         }
                                     };
-                                    xmlhttp.open("GET", "http://capstone.mattcormier.com/api/funds/marketSharePriceHistory/{{ $fund->id }}/1");
+                                    xmlhttp.open("GET", "/api/funds/marketSharePriceHistory/{{ $fund->id }}/1");
                                     xmlhttp.send();
 
                                 };
