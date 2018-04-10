@@ -23,6 +23,10 @@ class InvestmentsController extends Controller
             return redirect()->back()->with('errorMessage', 'There was an error retrieving fund');
         }
 
+        if ($fund->is_closed) {
+            return redirect()->back()->with('errorMessage', 'Error processing due to fund being closed.');
+        }
+
         return view('investments.create', compact('fund'));
     }
 
@@ -37,6 +41,10 @@ class InvestmentsController extends Controller
         }
         catch (ModelNotFoundException $ex) {
             return redirect()->back()->with('errorMessage', 'There was an error retrieving fund information');
+        }
+
+        if ($fund->is_closed) {
+            return redirect()->back()->with('errorMessage', 'Error processing due to fund being closed.');
         }
 
         $user = User::find(Auth::user()->getAuthIdentifier());
@@ -74,6 +82,10 @@ class InvestmentsController extends Controller
         }
         catch (ModelNotFoundException $ex) {
             return redirect()->back()->with('errorMessage', 'There was an error approving investment.');
+        }
+
+        if ($investment->fund->is_closed) {
+            return redirect()->back()->with('errorMessage', 'Error processing due to fund being closed.');
         }
 
         if($investment->fund->user->id == Auth::user()->getAuthIdentifier()) {
