@@ -78,6 +78,12 @@ class FundsController extends Controller
             $unconfirmedInvestments = Investment::all()
                 ->where('fund_id', $fund->id)
                 ->where('is_approved', false);
+            $confirmedInvestments = Investment::where('fund_id', $fund->id)
+                ->where('fund_id', $id)
+                ->where('is_approved', true)
+                ->orderByDesc('created_at')
+                ->get();
+
             $transactions = $fund->transactions()->orderByDesc('created_at')->get();
             $currencies = Currency::all();
             $transactionTypes = TransactionType::all();
@@ -85,7 +91,8 @@ class FundsController extends Controller
             $pendingFundRemovals = FundsRemoval::where('fund_id', $fund->id)->get();
 
             return view('funds.management',
-                compact('fund', 'unconfirmedInvestments', 'transactions', 'currencies', 'transactionTypes', 'pendingFundRemovals'));
+                compact('fund', 'unconfirmedInvestments', 'transactions', 'currencies', 'transactionTypes',
+                    'pendingFundRemovals', 'confirmedInvestments'));
         }
 
         $transactions = $fund->transactions()->orderByDesc('created_at')->get();
