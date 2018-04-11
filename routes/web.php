@@ -30,6 +30,7 @@ Route::post('/profile/changePassword', 'UsersController@changePassword');
 
 Route::resource('/funds', 'FundsController');
 
+Route::get('/investments', 'InvestmentsController@index');
 Route::get('/investments/create/{id}', 'InvestmentsController@create');
 Route::get('/investments/removal/{id}', 'InvestmentsController@removal');
 Route::post('/investments/removal', 'InvestmentsController@removalRequest');

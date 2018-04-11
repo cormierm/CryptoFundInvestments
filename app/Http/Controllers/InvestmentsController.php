@@ -14,6 +14,17 @@ use Illuminate\Support\Facades\Mail;
 
 class InvestmentsController extends Controller
 {
+    public function index()
+    {
+        $confirmedInvestments = Investment::where('user_id', Auth::user()->getAuthIdentifier())
+            ->where('is_approved', true)
+            ->orderByDesc('created_at')
+            ->get();
+        $unconfirmedInvestments = Investment::where('user_id', Auth::user()->getAuthIdentifier())->where('is_approved', false)->get();
+
+        return view('investments.index', compact('confirmedInvestments', 'unconfirmedInvestments'));
+    }
+
     public function create($fund_id)
     {
         try {
