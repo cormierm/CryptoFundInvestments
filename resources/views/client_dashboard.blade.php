@@ -4,25 +4,10 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-12">
-            <div class="card card-default">
-                <div class="card-header">Dashboard</div>
-
-                <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success">
-                            {{ session('status') }}
-                        </div>
-                    @endif
-
-                    <h1>Welcome back {{ Auth::user()->first_name }}!</h1>
-                    <h2>Client Dashboard</h2>
-
-                </div>
-            </div>
             @if(count($funds) > 0)
                 
                 <div class="card card-default">
-                    <div class="card-header">Your Funds</div>
+                    <div class="card-header">Client Dashboard</div>
                     <div class="card-body">
                         <table class="table">
                             <tr>
