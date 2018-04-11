@@ -17,7 +17,14 @@
                             </tr>
                             @foreach ($funds as $fund)
                                 <tr>
-                                    <td><a href="/funds/{{ $fund->id }}">{{ $fund->name }}</a></td>
+                                    <td>
+                                        <a href="/funds/{{ $fund->id }}">
+                                            {{ $fund->name }}
+                                            @if($fund->is_closed)
+                                                <span class="badge badge-danger">Closed</span>
+                                            @endif
+                                        </a>
+                                    </td>
                                     <td>${{ number_format($fund->marketValue(), 2) }}</td>
                                     <td>${{ number_format($fund->userMarketValue(), 2) }}</td>
                                 </tr>
