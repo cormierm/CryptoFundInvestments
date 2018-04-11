@@ -13,11 +13,17 @@
                             <table class="table">
                                 <tr>
                                     <th>Submitted on</th>
+                                    <th>Fund</th>
                                     <th>Investment (CAD)</th>
                                 </tr>
                                 @foreach ($unconfirmedInvestments as $investment)
                                     <tr>
                                         <td>{{ $investment->created_at }}</td>
+                                        <td>
+                                            <a href="/funds/{{ $investment->fund->id }}">
+                                                {{ $investment->fund->name }}
+                                            </a>
+                                        </td>
                                         <td>${{ number_format($investment->amount, 2) }}</td>
                                     </tr>
                                 @endforeach
@@ -43,7 +49,11 @@
                                 @foreach ($confirmedInvestments as $investment)
                                     <tr>
                                         <td>{{ $investment->created_at }}</td>
-                                        <td>{{ $investment->fund->name }}</td>
+                                        <td>
+                                            <a href="/funds/{{ $investment->fund->id }}">
+                                                {{ $investment->fund->name }}
+                                            </a>
+                                        </td>
                                         <td>${{ number_format($investment->amount, 2) }}</td>
                                         <td>{{ number_format($investment->shares, 2) }}</td>
                                         <td>${{ number_format(abs($investment->marketValue()), 2) }}</td>
