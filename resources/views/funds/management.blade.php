@@ -207,6 +207,21 @@
 
                                     </tr>
                                 </table>
+                                @if ($errors->has('buy_amount'))
+                                    <div class="alert-danger">
+                                        <p><strong>{{ $errors->first('buy_amount') }}</strong></p>
+                                    </div>
+                                @endif
+                                @if ($errors->has('sell_amount'))
+                                    <div class="alert-danger">
+                                        <p><strong>{{ $errors->first('rate') }}</strong></p>
+                                    </div>
+                                @endif
+                                @if ($errors->has('rate'))
+                                    <div class="alert-danger">
+                                        <p><strong>{{ $errors->first('rate') }}</strong></p>
+                                    </div>
+                                @endif
                             </form>
 
                         </div>

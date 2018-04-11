@@ -14,10 +14,10 @@ class TransactionsController extends Controller
             'fund_id'             =>  'required',
             'transaction_type_id' =>  'required',
             'buy_currency_id'     =>  'required',
-            'buy_amount'          =>  'required|min:0',
+            'buy_amount'          =>  'numeric|required|min:0.00000001',
             'sell_currency_id'    =>  'required',
-            'sell_amount'         =>  'required|min:0',
-            'rate'                =>  'required|min:0'
+            'sell_amount'         =>  'numeric|required|min:0.00000001',
+            'rate'                =>  'numeric|required|min:0.00000001'
         ]);
 
         try {
