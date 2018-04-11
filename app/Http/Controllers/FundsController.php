@@ -26,11 +26,11 @@ class FundsController extends Controller
         $user = Auth::user();
 
         if ($request->query('showClosed') == 'true') {
-            $funds = Fund::all();
+            $funds = Fund::orderBy('name')->get();
             $showClosed = true;
         }
         else {
-            $funds = Fund::all()->where('is_closed', false);
+            $funds = Fund::where('is_closed', false)->orderBy('name')->get();
             $showClosed = false;
         }
 
