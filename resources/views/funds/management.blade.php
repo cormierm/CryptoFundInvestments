@@ -16,6 +16,12 @@
                     <div class="card-body">
                         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
 
+                        <h2>
+                            {{ $fund->name }}
+                            @if($fund->is_closed)
+                                <span class="badge badge-danger">Closed</span>
+                            @endif
+                        </h2>
 
                         <div id="canvasDiv">
                             <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
@@ -120,14 +126,8 @@
                                 };
                             </script>
 
-                        <h2>
-                            <small>Name:</small> {{ $fund->name }}
-                            @if($fund->is_closed)
-                                <span class="badge badge-danger">Closed</span>
-                            @endif
-                        </h2>
                         <p><strong>Description:</strong> {{ $fund->description }}</p>
-                        <p><strong>Risk:</strong> {{ $fund->risk->name }}</p>
+                        <p><strong>Risk Type:</strong> {{ $fund->risk->name }}</p>
 
                         <p><strong>Total Shares:</strong> {{ number_format($fund->totalShares(),2) }}</p>
                         <p><strong>Current Market Value (CAD):</strong> ${{ number_format($fund->marketValue(), 2) }}</p>
