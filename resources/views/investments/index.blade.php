@@ -5,7 +5,6 @@
         <div class="row justify-content-center">
             <div class="col-md-12">
                 @if($unconfirmedInvestments->count() > 0)
-                    <br>
                     <div class="card card-default">
                         <div class="card-header">Investments Waiting Approval</div>
 
@@ -32,7 +31,6 @@
                     </div>
                 @endif
 
-                <br>
                 <div class="card card-default">
                     <div class="card-header">Your Investment History</div>
 
