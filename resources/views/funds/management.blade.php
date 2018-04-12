@@ -147,7 +147,13 @@
                             @foreach($fund->allBalances() as $currency => $balance)
                                 <tr>
                                     <td>{{ $currency }}</td>
-                                    <td>{{ $balance }}</td>
+                                    <td>
+                                        @if($currency == 'CAD')
+                                            ${{ number_format($balance, 2) }}
+                                        @else
+                                            {{ $balance }}
+                                        @endif
+                                    </td>
                                 </tr>
                             @endforeach
                         </table>
