@@ -44,7 +44,7 @@ class InvestmentsController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'amount'        =>  'required'
+            'amount'        =>  'numeric|required|min:100'
         ]);
 
         try {
@@ -155,7 +155,7 @@ class InvestmentsController extends Controller
     public function removalRequest(Request $request)
     {
         $this->validate($request, [
-            'amount' => 'required'
+            'amount' => 'numeric|required|min:0.001'
         ]);
 
         try {
