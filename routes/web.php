@@ -36,6 +36,7 @@ Route::get('/investments/removal/{id}', 'InvestmentsController@removal');
 Route::post('/investments/removal', 'InvestmentsController@removalRequest');
 Route::post('/investments', 'InvestmentsController@store');
 Route::post('/investments/approve', 'InvestmentsController@approve');
+Route::post('/investments/refuse', 'InvestmentsController@refuse');
 
 Route::post('/transactions', 'TransactionsController@store');
 

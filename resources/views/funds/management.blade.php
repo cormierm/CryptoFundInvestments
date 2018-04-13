@@ -255,10 +255,15 @@
                                         <td>${{ $unconfirmedInvestment->amount }}</td>
                                         <td>{{ $unconfirmedInvestment->user->email }}</td>
                                         <td>
-                                            <form method="post" action="/investments/approve">
+                                            <form method="post" action="/investments/approve" class="float-left">
                                                 @csrf
                                                 <input type="hidden" name="investment_id" value="{{ $unconfirmedInvestment->id }}" />
-                                                <button class="btn btn-danger">Approve</button>
+                                                <button class="btn btn-success">Approve</button>
+                                            </form>
+                                            <form method="post" action="/investments/refuse">
+                                                @csrf
+                                                <input type="hidden" name="investment_id" value="{{ $unconfirmedInvestment->id }}" />
+                                                <button class="btn btn-danger">Refuse</button>
                                             </form>
                                         </td>
 

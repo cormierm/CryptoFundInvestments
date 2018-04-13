@@ -116,6 +116,28 @@ class InvestmentsController extends Controller
         return redirect()->back()->with('errorMessage', 'There was an error approving investment.');
     }
 
+    public function refuse(Request $request)
+    {
+        try {
+            $investment = Investment::findOrFail($request->investment_id);
+        }
+        catch (ModelNotFoundException $ex) {
+            return redirect()->back()->with('errorMessage', 'Error retrieving investment information');
+        }
+
+        if ($investment->fund->is_closed) {
+            return redirect()->back()->with('errorMessage', 'Error processing due to fund being closed.');
+        }
+
+        if($investment->fund->user->id == Auth::user()->getAuthIdentifier()) {
+            $investment->delete();
+
+            return redirect()->back()->with('successMessage', 'Investment was successfully refused.');
+        }
+
+        return redirect()->back()->with('errorMessage', 'There was an error refusing investment.');
+    }
+
     private function calculateShares($investment) {
         $fund = $investment->fund;
         $totalShares = $fund->totalShares();
