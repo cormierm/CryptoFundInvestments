@@ -27,8 +27,24 @@ class ApiController extends Controller
 
         $data = array();
 
+        if ($days == '1') {
+            $interval = 12;
+        }
+        else {
+            $interval = 12 * 24;
+        }
+
+        $counter = $interval - (count($timestampList) % $interval) + 1;
+
         foreach($timestampList as $timestamp) {
-            $data[$timestamp->timestamp] = $fund->shareMarketValueByTimestamp($timestamp);
+            if ($counter >= $interval) {
+                $data[$timestamp->timestamp] = $fund->shareMarketValueByTimestamp($timestamp);
+                $counter = 1;
+            }
+            else {
+                $counter++;
+            }
+
         }
 
         return response()->json($data,Response::HTTP_OK);

@@ -13,6 +13,7 @@
         <a href="/admin">Admin Portal</a>
     @endif
     <a href="/funds">Funds</a>
+    <a href="/investments">Investments</a>
     <a href="/coinlookup">Coin Lookup</a>
     <a href="/profile">Profile</a>
     <a href="{{ route('logout') }}"

@@ -14,6 +14,17 @@ use Illuminate\Support\Facades\Mail;
 
 class InvestmentsController extends Controller
 {
+    public function index()
+    {
+        $confirmedInvestments = Investment::where('user_id', Auth::user()->getAuthIdentifier())
+            ->where('is_approved', true)
+            ->orderByDesc('created_at')
+            ->get();
+        $unconfirmedInvestments = Investment::where('user_id', Auth::user()->getAuthIdentifier())->where('is_approved', false)->get();
+
+        return view('investments.index', compact('confirmedInvestments', 'unconfirmedInvestments'));
+    }
+
     public function create($fund_id)
     {
         try {
@@ -23,13 +34,17 @@ class InvestmentsController extends Controller
             return redirect()->back()->with('errorMessage', 'There was an error retrieving fund');
         }
 
+        if ($fund->is_closed) {
+            return redirect()->back()->with('errorMessage', 'Error processing due to fund being closed.');
+        }
+
         return view('investments.create', compact('fund'));
     }
 
     public function store(Request $request)
     {
         $this->validate($request, [
-            'amount'        =>  'required'
+            'amount'        =>  'numeric|required|min:100'
         ]);
 
         try {
@@ -37,6 +52,10 @@ class InvestmentsController extends Controller
         }
         catch (ModelNotFoundException $ex) {
             return redirect()->back()->with('errorMessage', 'There was an error retrieving fund information');
+        }
+
+        if ($fund->is_closed) {
+            return redirect()->back()->with('errorMessage', 'Error processing due to fund being closed.');
         }
 
         $user = User::find(Auth::user()->getAuthIdentifier());
@@ -76,6 +95,10 @@ class InvestmentsController extends Controller
             return redirect()->back()->with('errorMessage', 'There was an error approving investment.');
         }
 
+        if ($investment->fund->is_closed) {
+            return redirect()->back()->with('errorMessage', 'Error processing due to fund being closed.');
+        }
+
         if($investment->fund->user->id == Auth::user()->getAuthIdentifier()) {
             $investment->is_approved = true;
             $investment->shares = $this->calculateShares($investment);
@@ -91,6 +114,28 @@ class InvestmentsController extends Controller
         }
 
         return redirect()->back()->with('errorMessage', 'There was an error approving investment.');
+    }
+
+    public function refuse(Request $request)
+    {
+        try {
+            $investment = Investment::findOrFail($request->investment_id);
+        }
+        catch (ModelNotFoundException $ex) {
+            return redirect()->back()->with('errorMessage', 'Error retrieving investment information');
+        }
+
+        if ($investment->fund->is_closed) {
+            return redirect()->back()->with('errorMessage', 'Error processing due to fund being closed.');
+        }
+
+        if($investment->fund->user->id == Auth::user()->getAuthIdentifier()) {
+            $investment->delete();
+
+            return redirect()->back()->with('successMessage', 'Investment was successfully refused.');
+        }
+
+        return redirect()->back()->with('errorMessage', 'There was an error refusing investment.');
     }
 
     private function calculateShares($investment) {
@@ -113,6 +158,10 @@ class InvestmentsController extends Controller
             return redirect()->back()->with('errorMessage', 'There was an error retrieving fund');
         }
 
+        if ($fund->is_closed) {
+            return redirect()->back()->with('errorMessage', 'Error processing due to fund being closed.');
+        }
+
         $user = Auth::user();
 
         $availableFunds = $fund->userMarketValue();
@@ -128,10 +177,19 @@ class InvestmentsController extends Controller
     public function removalRequest(Request $request)
     {
         $this->validate($request, [
-            'amount' => 'required'
+            'amount' => 'numeric|required|min:0.001'
         ]);
 
-        $fund = Fund::findOrFail($request->fund_id);
+        try {
+            $fund = Fund::findOrFail($request->fund_id);
+        }
+        catch (ModelNotFoundException $ex) {
+            return redirect()->back()->with('errorMessage', 'There was an error retrieving fund');
+        }
+
+        if ($fund->is_closed) {
+            return redirect()->back()->with('errorMessage', 'Error processing due to fund being closed.');
+        }
 
         if ($fund->userAvailableShares() < $request->amount) {
             return redirect()->back()->with('errorMessage', 'You do not have any shares for that request');

@@ -8,17 +8,27 @@
                     <div class="card-header">
                         <h3>
                             Fund Details
-                            <a href="/investments/create/{{ $fund->id }}">
-                                <button class="btn btn-info float-right">Invest In Fund</button>
-                            </a>
-                            <a href="/investments/removal/{{ $fund->id }}">
-                                <button class="btn btn-danger float-right">Request Investment Removal</button>
-                            </a>
+                            @if(!$fund->is_closed)
+                                <a href="/investments/create/{{ $fund->id }}">
+                                    <button class="btn btn-info float-right">Invest In Fund</button>
+                                </a>
+                            @endif
+                            @if(!$fund->is_closed && $fund->userShares() > 0)
+                                <a href="/investments/removal/{{ $fund->id }}">
+                                    <button class="btn btn-danger float-right">Request Investment Removal</button>
+                                </a>
+                            @endif
                         </h3>
                     </div>
                     <div class="card-body">
                         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
 
+                        <h2>
+                            {{ $fund->name }}
+                            @if($fund->is_closed)
+                                <span class="badge badge-danger">Closed</span>
+                            @endif
+                        </h2>
 
                         <div id="canvasDiv">
                             <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
@@ -117,20 +127,15 @@
                                         });
                                     }
                                 };
+
                                 weekCall.open("GET", "/api/funds/marketSharePriceHistory/{{ $fund->id }}/7");
                                 weekCall.send();
-
                             };
                         </script>
-                        <h2>
-                            <small>Name:</small> {{ $fund->name }}
-                            @if($fund->is_closed)
-                                <span class="badge badge-danger">Closed</span>
-                            @endif
-                        </h2>
+
                         <br>
                         <p><strong>Description:</strong> {{ $fund->description }}</p>
-                        <p><strong>Risk:</strong> {{ $fund->risk->name }}</p>
+                        <p><strong>Risk Type:</strong> {{ $fund->risk->name }}</p>
                         <p><strong>Creator:</strong> <a href="/trader/{{ $fund->user_id }}">{{ $fund->user->first_name . " " . $fund->user->last_name }}</a></p>
 
                         <p><strong>Total Shares:</strong> {{ number_format($fund->totalShares(), 2) }}</p>
@@ -142,7 +147,7 @@
             </div>
             <div class="col-lg-6">
                 <div class="card card-default">
-                    <div class="card-header">Current Holdings</div>
+                    <div class="card-header">Total Fund Holdings</div>
                     <div class="card-body">
                         <table class="table">
                             <tr>
@@ -151,13 +156,38 @@
                             </tr>
                             @foreach($fund->allBalances() as $currency => $balance)
                                 <tr>
-                                    <td>{{ $currency }}</td>
-                                    <td>{{ $balance }}</td>
+                                    <td>
+                                        {{ $currency }}
+                                    </td>
+                                    <td>
+                                        @if($currency == 'CAD')
+                                            ${{ number_format($balance, 2) }}
+                                        @else
+                                            {{ $balance }}
+                                        @endif
+                                    </td>
                                 </tr>
                             @endforeach
                         </table>
                     </div>
                 </div>
+                @if($fund->userShares() > 0)
+                    <div class="card card-default">
+                        <div class="card-header">Your Holdings</div>
+                        <div class="card-body">
+                            <table class="table">
+                                <tr>
+                                    <th>Shares</th>
+                                    <td>{{ number_format($fund->userShares(), 2) }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Market Value</th>
+                                    <td>${{ number_format($fund->userMarketValue(), 2) }}</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                @endif
             </div>
         </div>
         <div class="row justify-content-center">

@@ -61,8 +61,8 @@ class UsersController extends Controller
         if ($request->email == $user->email)
         {
             $this->validate($request, [
-                'first_name' => 'required|string|max:255',
-                'last_name' => 'required|string|max:255',
+                'first_name' => 'required|string|min:2|max:255',
+                'last_name' => 'required|string|min:2|max:255',
                 'phone' => 'required|string|max:255',
                 'email' => 'required|string|email|max:255',
             ]);
@@ -70,8 +70,8 @@ class UsersController extends Controller
         else
         {
             $this->validate($request, [
-                'first_name' => 'required|string|max:255',
-                'last_name' => 'required|string|max:255',
+                'first_name' => 'required|string|min:2|max:255',
+                'last_name' => 'required|string|min:2|max:255',
                 'phone' => 'required|string|max:255',
                 'email' => 'required|string|email|max:255|unique:users',
             ]);
@@ -121,8 +121,5 @@ class UsersController extends Controller
         else {
             return redirect()->back()->with("errorMessage", "There is a request for Trader role");
         }
-
-        return redirect()->back()->with("errorMessage", "Error processing request for Trader role");
     }
-
 }

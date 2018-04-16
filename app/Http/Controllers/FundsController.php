@@ -26,11 +26,11 @@ class FundsController extends Controller
         $user = Auth::user();
 
         if ($request->query('showClosed') == 'true') {
-            $funds = Fund::all();
+            $funds = Fund::orderBy('name')->get();
             $showClosed = true;
         }
         else {
-            $funds = Fund::all()->where('is_closed', false);
+            $funds = Fund::where('is_closed', false)->orderBy('name')->get();
             $showClosed = false;
         }
 
@@ -78,6 +78,12 @@ class FundsController extends Controller
             $unconfirmedInvestments = Investment::all()
                 ->where('fund_id', $fund->id)
                 ->where('is_approved', false);
+            $confirmedInvestments = Investment::where('fund_id', $fund->id)
+                ->where('fund_id', $id)
+                ->where('is_approved', true)
+                ->orderByDesc('created_at')
+                ->get();
+
             $transactions = $fund->transactions()->orderByDesc('created_at')->get();
             $currencies = Currency::all();
             $transactionTypes = TransactionType::all();
@@ -85,7 +91,8 @@ class FundsController extends Controller
             $pendingFundRemovals = FundsRemoval::where('fund_id', $fund->id)->get();
 
             return view('funds.management',
-                compact('fund', 'unconfirmedInvestments', 'transactions', 'currencies', 'transactionTypes', 'pendingFundRemovals'));
+                compact('fund', 'unconfirmedInvestments', 'transactions', 'currencies', 'transactionTypes',
+                    'pendingFundRemovals', 'confirmedInvestments'));
         }
 
         $transactions = $fund->transactions()->orderByDesc('created_at')->get();

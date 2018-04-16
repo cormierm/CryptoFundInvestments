@@ -5,42 +5,44 @@
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card card-default">
-                <div class="card-header">Dashboard</div>
-
+                <div class="card-header">Client Dashboard</div>
                 <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success">
-                            {{ session('status') }}
-                        </div>
-                    @endif
+                    @if(count($funds) > 0)
 
-                    <h1>Welcome back {{ Auth::user()->first_name }}!</h1>
-                    <h2>Client Dashboard</h2>
-
-                </div>
-            </div>
-            @if(count($funds) > 0)
-                
-                <div class="card card-default">
-                    <div class="card-header">Your Funds</div>
-                    <div class="card-body">
                         <table class="table">
                             <tr>
                                 <th>Fund Name</th>
                                 <th>Fund Market Value(CAD)</th>
                                 <th>Your Market Value(CAD)</th>
                             </tr>
+
                             @foreach ($funds as $fund)
                                 <tr>
-                                    <td><a href="/funds/{{ $fund->id }}">{{ $fund->name }}</a></td>
+                                    <td>
+                                        <a href="/funds/{{ $fund->id }}">
+                                            {{ $fund->name }}
+                                            @if($fund->is_closed)
+                                                <span class="badge badge-danger">Closed</span>
+                                            @endif
+                                        </a>
+                                    </td>
                                     <td>${{ number_format($fund->marketValue(), 2) }}</td>
                                     <td>${{ number_format($fund->userMarketValue(), 2) }}</td>
                                 </tr>
                             @endforeach
+
                         </table>
-                    </div>
+
+                    @else
+                        <p>
+                            You are not currently invested in any funds. Go to
+                            <a href="/funds">Funds Page</a>
+                            to view and invest in funds.
+                        </p>
+                    @endif
+
                 </div>
-            @endif
+            </div>
             <div class="card card-default">
                 <div class="card-header">Coin Lookup</div>
 

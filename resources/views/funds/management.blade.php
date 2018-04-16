@@ -5,10 +5,23 @@
         <div class="row justify-content-center">
             <div class="col-lg-6">
                 <div class="card card-default">
-                    <div class="card-header">Fund Management</div>
+                    <div class="card-header">
+                        <h4>
+                            Fund Management
+                            @if(!$fund->is_closed)
+                                <a href="/funds/{{ $fund->id }}/edit"><button class="btn btn-primary float-right">Edit Fund Details</button></a>
+                            @endif
+                        </h4>
+                    </div>
                     <div class="card-body">
                         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
 
+                        <h2>
+                            {{ $fund->name }}
+                            @if($fund->is_closed)
+                                <span class="badge badge-danger">Closed</span>
+                            @endif
+                        </h2>
 
                         <div id="canvasDiv">
                             <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
@@ -79,9 +92,9 @@
                                             var data = JSON.parse(this.response);
 
                                             for(var key in data) {
-                                                var localMonth = ["Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Agu", "Sept", "Oct", "Nov", "Dec"];
+                                                var localMonth = ["Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"];
                                                 var date = new Date(key*1000);
-                                                timeStamp.push(date.getHours() + ':' + (localMonth[date.getMonth()] + ' ' + date.getDate());
+                                                timeStamp.push((localMonth[date.getMonth()] + ' ' + date.getDate()) + ' ' + date.getHours() + ':' + date.getMinutes());
                                                 sharePrice.push(data[key]);
                                             }
 
@@ -113,17 +126,8 @@
                                 };
                             </script>
 
-                        <h2>
-                            <small>Name:</small> {{ $fund->name }}
-                            @if(!$fund->is_closed)
-                                <a href="/funds/{{ $fund->id }}/edit"><button class="btn btn-primary float-right">Edit Fund</button></a>
-                            @endif
-                            @if($fund->is_closed)
-                                <span class="badge badge-danger">Closed</span>
-                            @endif
-                        </h2>
                         <p><strong>Description:</strong> {{ $fund->description }}</p>
-                        <p><strong>Risk:</strong> {{ $fund->risk->name }}</p>
+                        <p><strong>Risk Type:</strong> {{ $fund->risk->name }}</p>
 
                         <p><strong>Total Shares:</strong> {{ number_format($fund->totalShares(),2) }}</p>
                         <p><strong>Current Market Value (CAD):</strong> ${{ number_format($fund->marketValue(), 2) }}</p>
@@ -143,7 +147,13 @@
                             @foreach($fund->allBalances() as $currency => $balance)
                                 <tr>
                                     <td>{{ $currency }}</td>
-                                    <td>{{ $balance }}</td>
+                                    <td>
+                                        @if($currency == 'CAD')
+                                            ${{ number_format($balance, 2) }}
+                                        @else
+                                            {{ $balance }}
+                                        @endif
+                                    </td>
                                 </tr>
                             @endforeach
                         </table>
@@ -207,6 +217,21 @@
 
                                     </tr>
                                 </table>
+                                @if ($errors->has('buy_amount'))
+                                    <div class="alert-danger">
+                                        <p><strong>{{ $errors->first('buy_amount') }}</strong></p>
+                                    </div>
+                                @endif
+                                @if ($errors->has('sell_amount'))
+                                    <div class="alert-danger">
+                                        <p><strong>{{ $errors->first('rate') }}</strong></p>
+                                    </div>
+                                @endif
+                                @if ($errors->has('rate'))
+                                    <div class="alert-danger">
+                                        <p><strong>{{ $errors->first('rate') }}</strong></p>
+                                    </div>
+                                @endif
                             </form>
 
                         </div>
@@ -218,22 +243,27 @@
                         <div class="card-body">
                             <table class="table">
                                 <tr>
+                                    <th>Submitted on</th>
                                     <th>Amount</th>
                                     <th>Client</th>
-                                    <th>Submitted on</th>
                                     <th></th>
                                 </tr>
 
                                 @foreach($unconfirmedInvestments as $unconfirmedInvestment)
                                     <tr>
-                                        <td>${{  $unconfirmedInvestment->amount }}</td>
-                                        <td>{{  $unconfirmedInvestment->user->email }}</td>
-                                        <td>{{  $unconfirmedInvestment->created_at }}</td>
+                                        <td>{{ $unconfirmedInvestment->created_at }}</td>
+                                        <td>${{ $unconfirmedInvestment->amount }}</td>
+                                        <td>{{ $unconfirmedInvestment->user->email }}</td>
                                         <td>
-                                            <form method="post" action="/investments/approve">
+                                            <form method="post" action="/investments/approve" class="float-left">
                                                 @csrf
                                                 <input type="hidden" name="investment_id" value="{{ $unconfirmedInvestment->id }}" />
-                                                <button class="btn btn-danger">Approve</button>
+                                                <button class="btn btn-success">Approve</button>
+                                            </form>
+                                            <form method="post" action="/investments/refuse">
+                                                @csrf
+                                                <input type="hidden" name="investment_id" value="{{ $unconfirmedInvestment->id }}" />
+                                                <button class="btn btn-danger">Refuse</button>
                                             </form>
                                         </td>
 
@@ -245,25 +275,24 @@
                     </div>
                 @endif
                 @if($pendingFundRemovals->count() > 0)
-                    <br>
                     <div class="card card-default">
                         <div class="card-header">Pending Fund Removal Requests</div>
 
                         <div class="card-body">
                             <table class="table">
                                 <tr>
+                                    <th>Submitted on</th>
                                     <th>Client</th>
                                     <th>Shares Amount</th>
                                     <th>Market Value(CAD)</th>
-                                    <th>Created on</th>
                                     <th></th>
                                 </tr>
                                 @foreach ($pendingFundRemovals as $fr)
                                     <tr>
+                                        <td>{{ $fr->created_at }}</td>
                                         <td>{{ $fr->user->email }}</td>
                                         <td>${{ $fr->share_amount }}</td>
                                         <td>${{ number_format($fr->marketValue(), 2) }}</td>
-                                        <td>{{ $fr->created_at }}</td>
                                         <td>
                                             <form method="post" action="/investments/remove/approve">
                                                 @csrf
@@ -277,23 +306,23 @@
                         </div>
                     </div>
                 @endif
-                <br>
                 <div class="card card-default">
                     <div class="card-header">Transaction History</div>
                     <div class="card-body">
                         <table class="table">
                             <tr>
+                                <th>Timestamp</th>
                                 <th>Type</th>
                                 <th>Buy Currency</th>
                                 <th>Buy Amount</th>
                                 <th>Sell Currency</th>
                                 <th>Sell Amount</th>
                                 <th>Rate</th>
-                                <th>Timestamp</th>
                             </tr>
 
                             @foreach($transactions as $transaction)
                                 <tr>
+                                    <td>{{  $transaction->created_at }}</td>
                                     <td>
                                         {{ $transaction->type->name }}
                                     </td>
@@ -319,14 +348,38 @@
                                         @if($transaction->rate != 0)
                                             {{ $transaction->rate }}</td>
                                     @endif
-                                    <td>{{  $transaction->created_at }}</td>
                                 </tr>
                             @endforeach
 
                         </table>
                     </div>
                 </div>
-            </div>
+                @if($confirmedInvestments->count() > 0)
+                    <div class="card card-default">
+                        <div class="card-header">Investment History</div>
+                        <div class="card-body">
+                            <table class="table">
+                                <tr>
+                                    <th>Timestamp</th>
+                                    <th>Amount</th>
+                                    <th>Client</th>
+                                    <th></th>
+                                </tr>
+
+                                @foreach($confirmedInvestments as $investment)
+                                    <tr>
+                                        <td>{{ $investment->created_at }}</td>
+                                        <td>${{ $investment->amount }}</td>
+                                        <td>{{ $investment->user->email }}</td>
+                                    </tr>
+                                @endforeach
+
+                            </table>
+                        </div>
+                    </div>
+                @endif
+
+                </div>
         </div>
     </div>
 @endsection
