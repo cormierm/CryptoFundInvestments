@@ -15,7 +15,11 @@ class TestProfileFormFail extends TestCase
      */
     public function TestProfileFormFail()
     {
-        $this->visit('/profile/edit')
+        $this->visit('/login')
+			 ->type('dummyEmail123@gmail.com', 'email')
+			 ->type('123456', 'password')
+			 ->press('Login')
+			 ->visit('/profile/edit')
 			 ->type('test1@gmail.com', 'email')
 			 ->press('UpdateProfile')
 			 ->seePageIs('/profile/edit');

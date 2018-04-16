@@ -2,25 +2,24 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
+use Laravel\BrowserKitTesting\TestCase as BaseTestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class TestProfileFormDatabase extends TestCase
+abstract class TestProfileFormDatabase extends BaseTestCase
 {
-    /**
-     * A basic test example.
-     *
-     * @return void
-     */
     public function TestProfileFormDatabase()
     {
-        $this->visit('/profile/edit')
+        $this->visit('/login')
+			 ->type('dummyEmail123@gmail.com', 'email')
+			 ->type('123456', 'password')
+			 ->press('Login')
+			 ->visit('/profile/edit')
 			 ->type('test1@gmail.com', 'email')
 			 ->type('Johnathan', 'first_name')
-			 ->type('Fusari', 'last_name')
+			 ->type('Smith', 'last_name')
 			 ->type('1231231234', 'phone')
-			 ->press('UpdateProfile')
+			 ->press('Update Profile')
 			 ->seeInDatabase('Users', ['FirstName' => 'Johnathan']);
     }
 }
