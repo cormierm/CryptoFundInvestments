@@ -14,9 +14,9 @@
         <style>
             html, body {
                 background-color: #000;
-                color: #fff;
+                color: #99d9ff;
                 font-family: 'Raleway', sans-serif;
-                font-weight: 400;
+                font-weight: 500;
                 height: 100vh;
                 margin: 0;
                 background: url('../images/background.jpg') no-repeat center center fixed;
@@ -55,7 +55,7 @@
             }
 
             .links > a {
-                color: #636b6f;
+                color: #99d9ff;
                 padding: 0 25px;
                 font-size: 12px;
                 font-weight: 600;
@@ -92,7 +92,7 @@
                     <div class="col-md-8">
                         <div class="card card-default">
                             <div class="card-body">
-                                <p>We bring traders and clients together to manage and monitor cryptocurrency investments. Traders can create cryptocurrency funds that allows clients with minimal knowledge or expertise to invest in the cryptocurrency market. Traders manage funds similar to mutual funds and clients can view current market value and history on their investments.</p>
+                                <p><b>We bring traders and clients together to manage and monitor cryptocurrency investments. Traders can create cryptocurrency funds that allows clients with minimal knowledge or expertise to invest in the cryptocurrency market. Traders manage funds similar to mutual funds and clients can view current market value and history on their investments.</b></p>
                             </div>
                         </div>
                     </div>
