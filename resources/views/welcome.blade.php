@@ -13,12 +13,17 @@
         <!-- Styles -->
         <style>
             html, body {
-                background-color: #fff;
-                color: #636b6f;
+                background-color: #000;
+                color: #fff;
                 font-family: 'Raleway', sans-serif;
-                font-weight: 100;
+                font-weight: 400;
                 height: 100vh;
                 margin: 0;
+                background: url('../images/background.jpg') no-repeat center center fixed;
+                -webkit-background-size: cover;
+                -moz-background-size: cover;
+                -o-background-size: cover;
+                background-size: cover;
             }
 
             .full-height {
@@ -83,12 +88,14 @@
                     Crypto Fund Investments
                 </div>
 
-                <div class="links">
-                    <a href="https://laravel.com/docs">Documentation</a>
-                    <a href="https://laracasts.com">Laracasts</a>
-                    <a href="https://laravel-news.com">News</a>
-                    <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>
+                <div class="row justify-content-center">
+                    <div class="col-md-8">
+                        <div class="card card-default">
+                            <div class="card-body">
+                                <p>We bring traders and clients together to manage and monitor cryptocurrency investments. Traders can create cryptocurrency funds that allows clients with minimal knowledge or expertise to invest in the cryptocurrency market. Traders manage funds similar to mutual funds and clients can view current market value and history on their investments.</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
