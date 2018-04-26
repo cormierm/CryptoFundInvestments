@@ -75,12 +75,19 @@ class InvestmentsController extends Controller
             'client' => $user->email
         ];
 
-//        Mail::send('emails.investment', $data, function ($message) use ($fund) {
-//            $message->to(
-//                $fund->user->email,
-//                $fund->user->first_name . ' ' . $fund->user->last_name
-//            )->subject('You have received an CryptoFundInvestment investment');
-//        });
+        try {
+            Mail::send('emails.investment', $data, function ($message) use ($fund) {
+                $message->to(
+                    $fund->user->email,
+                    $fund->user->first_name . ' ' . $fund->user->last_name
+                )->subject('You have received an Cryptocurrency Fund Investment investment');
+            });
+        }
+        catch (\Exception $ex) {
+            return redirect()->route('funds.show', [$request->fund_id])->with('successMessage',
+                'Successfully submitted investment $' . $request->amount . ' into fund \'' . $fund->name . '\'!');
+        }
+
 
         return redirect()->route('funds.show', [$request->fund_id])->with('successMessage',
             'Successfully submitted investment $' . $request->amount . ' into fund \'' . $fund->name . '\'!');
