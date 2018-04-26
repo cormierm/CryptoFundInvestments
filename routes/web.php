@@ -47,7 +47,7 @@ Route::post('/investments/remove/approve', 'FundsRemovalController@approve');
 
 Route::get('/admin', 'AdminController@index');
 Route::post('/admin/approveTraderRequest', 'AdminController@approveTraderRequest');
-Route::get('/admin/cancelTraderRequest', 'AdminController@cancelTraderRequest');
+Route::post('/admin/cancelTraderRequest', 'AdminController@cancelTraderRequest');
 
 
 use App\Role;

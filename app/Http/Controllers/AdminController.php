@@ -41,7 +41,7 @@ class AdminController extends Controller
         $user = User::findOrFail(Auth::user()->getAuthIdentifier());
 
         if ($user->isAdmin()) {
-            $traderRequest = TraderRequest::find($request->trader_request_id);
+            $traderRequest = TraderRequest::findOrFail($request->trader_request_id);
             $traderRequest->delete();
 
             return redirect()->back()->with('successMessage', 'Successfully cancelled trader request');
