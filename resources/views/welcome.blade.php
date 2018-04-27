@@ -85,7 +85,7 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    Crypto Fund Investments
+                    Cryptocurrency Fund Investments
                 </div>
 
                 <div class="row justify-content-center">
