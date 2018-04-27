@@ -21,40 +21,34 @@ class ApiController extends Controller
                 Response::HTTP_BAD_REQUEST);
         }
 
-        $ts = Carbon::now()->subDays($days);
+        if ($days < 1) {
+            return response()->json(['message' => 'Days cannot be less then 1'],
+                Response::HTTP_BAD_REQUEST);
+        }
 
-        $timestampList = $this->getTimestamps($ts);
+        if ($days == '1') {
+            $timestampList = $this->getTimestamps(Carbon::now()->timestamp, 24, 1);
+        }
+        else {
+            $timestampList = $this->getTimestamps(Carbon::now()->timestamp, $days, 24);
+        }
 
         $data = array();
 
-        if ($days == '1') {
-            $interval = 12;
-        }
-        else {
-            $interval = 12 * 24;
-        }
-
-        $counter = $interval - (count($timestampList) % $interval) + 1;
-
         foreach($timestampList as $timestamp) {
-            if ($counter >= $interval) {
-                $data[$timestamp->timestamp] = $fund->shareMarketValueByTimestamp($timestamp);
-                $counter = 1;
-            }
-            else {
-                $counter++;
-            }
-
+            $data[$timestamp] = $fund->shareMarketValueByTimestamp($timestamp);
         }
 
         return response()->json($data,Response::HTTP_OK);
     }
 
-    private function getTimestamps($ts) {
-        $btc = Currency::where('symbol', 'BTC')->first();
+    private function getTimestamps($timestamp, $count, $hours) {
+        $timestampList = array();
 
-        $temp = CoinPrice::where('currency_id', $btc->id)->where('created_at', '>', $ts)->get()->pluck('created_at');
+        for ($i=0; $i < $count; $i++) {
+            array_push($timestampList, $timestamp - ($i * (60 * 60 * $hours)));
+        }
 
-        return $temp;
+        return $timestampList;
     }
 }
