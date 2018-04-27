@@ -14,7 +14,7 @@
     <p>
         Fund: {{ $fund_name }}<br>
         Amount: ${{ number_format($amount, 2) }}<br>
-        Client: {{ $client->email }}
+        Client: {{ $client }}
     </p>
     <p>Please login to approve this request.</p>
     <p>
