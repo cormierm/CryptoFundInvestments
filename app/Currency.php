@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class Currency extends Model
 {
@@ -22,7 +23,7 @@ class Currency extends Model
 
     public function coinPriceByTimestamp($ts){
         return $this->hasOne('App\CoinPrice', 'currency_id', 'id')
-            ->where('created_at', '<', $ts)
+            ->where('created_at', '<', Carbon::createFromTimestamp($ts)->toDateTimeString())
             ->orderByDesc('created_at')
             ->first();
     }

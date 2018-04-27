@@ -27,10 +27,10 @@ class ApiController extends Controller
         }
 
         if ($days == '1') {
-            $timestampList = $this->getTimestamps(time() + (4 * 60 * 60), 24, 1);
+            $timestampList = $this->getTimestamps(time() + 4 * 60 * 60, 24, 1);
         }
         else {
-            $timestampList = $this->getTimestamps(time() + (4 * 60 * 60), $days, 24);
+            $timestampList = $this->getTimestamps(time() + 4 * 60 * 60, $days, 24);
         }
 
         $data = array();
@@ -46,7 +46,8 @@ class ApiController extends Controller
         $timestampList = array();
 
         for ($i=0; $i < $count; $i++) {
-            array_push($timestampList, $timestamp - ($i * (60 * 60 * $hours)));
+            $timestampMinusHours = $timestamp - ($i * (60 * 60 * $hours));
+            array_push($timestampList, $timestampMinusHours);
         }
 
         return $timestampList;

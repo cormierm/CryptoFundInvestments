@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\PaginationServiceProvider;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class Fund extends Model
 {
@@ -32,7 +33,7 @@ class Fund extends Model
     }
 
     public function totalSharesByTimestamp($ts) {
-        return $this->confirmInvestments()->where('created_at', '<', $ts)->sum('shares');
+        return $this->confirmInvestments()->where('created_at', '<', Carbon::createFromTimestamp($ts)->toDateTimeString())->sum('shares');
     }
 
     public function transactions() {
@@ -41,7 +42,7 @@ class Fund extends Model
 
     public function transactionsByTimestamp($ts) {
         return $this->hasMany('App\Transaction', 'fund_id', 'id')
-            ->where('created_at', '<',  $ts)->get();
+            ->where('created_at', '<',  Carbon::createFromTimestamp($ts)->toDateTimeString())->get();
     }
 
     public function getTotalByCurrencyId($currencyId) {
