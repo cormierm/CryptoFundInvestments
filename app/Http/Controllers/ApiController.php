@@ -36,7 +36,7 @@ class ApiController extends Controller
         $data = array();
 
         foreach($timestampList as $timestamp) {
-            $data[$timestamp] = $fund->shareMarketValueByTimestamp($timestamp);
+            $data[$timestamp] = $fund->shareMarketValueByTimestamp(Carbon::createFromTimestamp($timestamp)->toDateTimeString());
         }
 
         return response()->json($data,Response::HTTP_OK);

@@ -23,7 +23,7 @@ class Currency extends Model
 
     public function coinPriceByTimestamp($ts){
         return $this->hasOne('App\CoinPrice', 'currency_id', 'id')
-            ->where('created_at', '<', Carbon::createFromTimestamp($ts)->toDateTimeString())
+            ->where('created_at', '<', $ts)
             ->orderByDesc('created_at')
             ->first();
     }

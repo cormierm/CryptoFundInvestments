@@ -33,7 +33,7 @@ class Fund extends Model
     }
 
     public function totalSharesByTimestamp($ts) {
-        return $this->confirmInvestments()->where('created_at', '<', Carbon::createFromTimestamp($ts)->toDateTimeString())->sum('shares');
+        return $this->confirmInvestments()->where('created_at', '<', $ts)->sum('shares');
     }
 
     public function transactions() {
@@ -42,7 +42,7 @@ class Fund extends Model
 
     public function transactionsByTimestamp($ts) {
         return $this->hasMany('App\Transaction', 'fund_id', 'id')
-            ->where('created_at', '<',  Carbon::createFromTimestamp($ts)->toDateTimeString())->get();
+            ->where('created_at', '<',  $ts)->get();
     }
 
     public function getTotalByCurrencyId($currencyId) {
